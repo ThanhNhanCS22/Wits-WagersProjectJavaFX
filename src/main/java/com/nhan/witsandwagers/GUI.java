@@ -436,6 +436,34 @@ public class GUI extends Application {
                     int current = Integer.parseInt(countdownLabel.getText());
                     if (current >1) {
                         countdownLabel.setText(String.valueOf(current - 1));
+                        nextButton.setOnAction(e2 -> {
+                            String currentGuessString = answerField.getText().trim();
+
+                            // Check if the input is empty
+                            if (currentGuessString.isEmpty()) {
+                                notificationLabel.setText("Your guess cannot be empty. Please try again!");
+
+                            }
+
+                            else {
+                                countdown.stop() ;
+                                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
+                                game.addGuess(guess);
+
+                                if (playerCount < numPlayers) {
+                                    playerCount++;
+                                    currentSecond  = 20 ;
+                                    showQuestionScreen(stage); // Move to the next player's turn
+                                } else {
+                                    playerCount = 1 ;
+                                    game.sortGuesses();
+                                    game.placeGuessesInSlots();
+                                    currentSecond = 20 ;
+                                    showTableScreen(stage); // Proceed to the next screen
+
+                                }
+                            }
+                        });
                     } else {
 
                         countdownLabel.setText("0");
@@ -470,35 +498,35 @@ public class GUI extends Application {
                 })
         );
 
-        // Next Button Logic
-        nextButton.setOnAction(e -> {
-            String currentGuessString = answerField.getText().trim();
-
-            // Check if the input is empty
-            if (currentGuessString.isEmpty()) {
-                notificationLabel.setText("Your guess cannot be empty. Please try again!");
-
-            }
-
-            else {
-                countdown.stop() ;
-                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
-                game.addGuess(guess);
-
-                if (playerCount < numPlayers) {
-                    playerCount++;
-                    currentSecond  = 20 ;
-                    showQuestionScreen(stage); // Move to the next player's turn
-                } else {
-                    playerCount = 1 ;
-                    game.sortGuesses();
-                    game.placeGuessesInSlots();
-                    currentSecond = 20 ;
-                    showTableScreen(stage); // Proceed to the next screen
-
-                }
-            }
-        });
+//        // Next Button Logic
+//        nextButton.setOnAction(e -> {
+//            String currentGuessString = answerField.getText().trim();
+//
+//            // Check if the input is empty
+//            if (currentGuessString.isEmpty()) {
+//                notificationLabel.setText("Your guess cannot be empty. Please try again!");
+//
+//            }
+//
+//            else {
+//                countdown.stop() ;
+//                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
+//                game.addGuess(guess);
+//
+//                if (playerCount < numPlayers) {
+//                    playerCount++;
+//                    currentSecond  = 20 ;
+//                    showQuestionScreen(stage); // Move to the next player's turn
+//                } else {
+//                    playerCount = 1 ;
+//                    game.sortGuesses();
+//                    game.placeGuessesInSlots();
+//                    currentSecond = 20 ;
+//                    showTableScreen(stage); // Proceed to the next screen
+//
+//                }
+//            }
+//        });
         pauseButton.setOnAction(e -> {
 
             countdown.stop() ;
@@ -605,13 +633,13 @@ public class GUI extends Application {
             Button button = new Button();
 
 
-            if(game.getValSlot(i) != -1  ){
-                String valSlotStr = Long.toString(game.getValSlot(i) );
-
-                button.setText( valSlotStr ) ;
-
-
-            }
+//            if(game.getValSlot(i) != -1  ){
+//                String valSlotStr = Long.toString(game.getValSlot(i) );
+//
+//                button.setText( valSlotStr ) ;
+//
+//
+//            }
             button.setPrefWidth(120);
             button.setPrefHeight(600);
             button.setStyle(

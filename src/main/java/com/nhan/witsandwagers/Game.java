@@ -103,7 +103,7 @@ public class Game {
 
     // Place guesses into the 8 slots around slot 4
     public void placeGuessesInSlots() {
-        Arrays.fill(slots, -1);
+        Arrays.fill(slots, null);
         slots[0] = (long) -1; // Slot 0 represents "All Guesses Too High"
 
         int size = sortedUniqueGuesses.size();
