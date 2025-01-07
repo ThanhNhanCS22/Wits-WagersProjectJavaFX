@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.nhan.witsandwagers.GameController">
+    <VBox alignment="CENTER" spacing="20" prefWidth="600" prefHeight="400">
+        <Label text="Wits and Wagers Game" style="-fx-font-size: 24px;"/>
+
+        <Button text="Start Game" onAction="#startGame"/>
+        <Button text="Show Scores" onAction="#showScores"/>
+        <Button text="Exit" onAction="#exitGame"/>
+    </VBox>
+</AnchorPane>
