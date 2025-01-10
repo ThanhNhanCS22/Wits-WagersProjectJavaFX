@@ -9,7 +9,7 @@ public class Player {
 
     protected Player(String name) {
         this.name = name;
-        this.points = 70;
+        this.points = 70000;
     }
 
     public void setName(String name) {

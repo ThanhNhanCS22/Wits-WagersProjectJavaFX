@@ -62,6 +62,10 @@ public class Game {
         return this.players.get(index).getName() ;
     }
 
+    public void setPlayerBetAmount(int idx, int amount ) {
+        this.players.get(idx).setBetAmounts(amount);
+    }
+
 
     public boolean isValidPlayerName(String name) {
         if (!name.isEmpty() && !playerNames.contains(name)) {
@@ -103,7 +107,7 @@ public class Game {
 
     // Place guesses into the 8 slots around slot 4
     public void placeGuessesInSlots() {
-        Arrays.fill(slots, null);
+        Arrays.fill(slots, (long)-1);
         slots[0] = (long) -1; // Slot 0 represents "All Guesses Too High"
 
         int size = sortedUniqueGuesses.size();

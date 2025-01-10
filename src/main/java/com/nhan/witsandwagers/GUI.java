@@ -1,5 +1,6 @@
 package com.nhan.witsandwagers;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -69,6 +70,8 @@ public class GUI extends Application {
     private int playerCount = 1 ;
 
     private Label countdownLabel = new Label();
+
+    private Label betCountDownLabel = new Label();
     // Declare and initialize the Timeline
     private Timeline countdown = new Timeline();
 
@@ -76,6 +79,8 @@ public class GUI extends Application {
 
     private int currentSecond ;
     private Boolean paused  ;
+
+    private Label turnLabel = new Label() ;
 
 
 
@@ -107,6 +112,18 @@ public class GUI extends Application {
 //                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
         );
 
+        turnLabel.setStyle(
+                "-fx-text-fill: #e4d209;" +
+                        "-fx-font-size: 80px;" + // Font size
+                        "-fx-font-family: 'Comic Sans MS';"  // Font family
+//                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
+//                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);"
+        );
+        
+        turnLabel.setPrefWidth(2000);
+        turnLabel.setMaxWidth(2000);
+        StackPane.setAlignment(turnLabel, Pos.CENTER);
+
 //        questionNumTitle.setAlignment(Pos.CENTER);
 //        questionTitle.setAlignment(Pos.CENTER);
 
@@ -127,11 +144,6 @@ public class GUI extends Application {
 
         nameField.setStyle("-fx-font-size: 20px; -fx-text-fill: black;");
         nameField.setMaxWidth(400); // Explicitly set the maximum width
-        nameField.addEventFilter(javafx.scene.input.KeyEvent.KEY_TYPED, event -> {
-            if (" ".equals(event.getCharacter())) {
-                event.consume(); // Prevent the space character from being added to the TextField
-            }
-        });
 
         nameField.textProperty().addListener((observable, oldValue, newValue) -> {
             // Limit input length to 25 characters
@@ -174,7 +186,10 @@ public class GUI extends Application {
         StackPane.setAlignment(pauseButton, Pos.TOP_LEFT); // Position at the top-left corner
         StackPane.setMargin(pauseButton, new Insets(30, 0, 0, 30)); // Add margin for spacing
 
-        // Create the title
+        StackPane.setAlignment(betCountDownLabel, Pos.TOP_RIGHT) ;
+        StackPane.setMargin(betCountDownLabel, new Insets(30, 100, 0, 0)); // Add margin for spacing
+
+
 
         mainTitle.setStyle(
                 "-fx-text-fill: white;" +
@@ -320,6 +335,7 @@ public class GUI extends Application {
                     playerCount++;
                     inputPlayersName(  stage);
                 } else {
+                    notificationLabel.setText("");
                     showReadyToPlayScreen( stage );
                 }
             }
@@ -347,11 +363,11 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear() ;
 
 //        backgroundImage.setImage(new Image("file:ready_to_play_bg.jpg"));
-        vButtonBox.setSpacing(20) ;
+        vButtonBox.setSpacing(40) ;
 
 
         Label readyLabel = new Label("Are you ready to play ?" );
-        readyLabel.setStyle("-fx-font-size: 60px; -fx-text-fill: #caa510; -fx-font-family: 'Comic Sans MS';");
+        readyLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: rgba(246,190,6,0.94); -fx-font-size: 60px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
         playGameButton.setText("Play") ;
@@ -415,7 +431,7 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear();
         countdown.getKeyFrames().clear();
         vButtonBox.setSpacing(20);
-        notificationLabel.setText("");
+
 
         if(!paused) answerField.clear();
 
@@ -428,42 +444,74 @@ public class GUI extends Application {
 
         countdownLabel.setText(Integer.toString(currentSecond) );
 
+
+       if (currentSecond> 0 ) {
+           nextButton.setOnAction(e2 -> {
+               String currentGuessString = answerField.getText().trim();
+
+               // Check if the input is empty
+               if (currentGuessString.isEmpty()) {
+                   notificationLabel.setText("Your guess cannot be empty. Please try again!");
+
+               } else {
+                   countdown.stop();
+                   long guess = Long.parseLong(currentGuessString); // Parse the input as a number
+                   game.addGuess(guess);
+
+                   if (playerCount < numPlayers) {
+                       playerCount++;
+                       currentSecond = 20;
+                       showQuestionScreen(stage); // Move to the next player's turn
+                   } else {
+                       playerCount = 1;
+                       game.sortGuesses();
+                       game.placeGuessesInSlots();
+                       currentSecond = 30;
+                       showTurnScreen(stage); // Proceed to the next screen
+
+                   }
+               }
+           });
+       }
+
+
+
         String guessString;
         guessString = answerField.getText().trim();
         countdown.getKeyFrames().add(
 
                 new KeyFrame(Duration.seconds(1), e -> {
-                    int current = Integer.parseInt(countdownLabel.getText());
-                    if (current >1) {
-                        countdownLabel.setText(String.valueOf(current - 1));
-                        nextButton.setOnAction(e2 -> {
-                            String currentGuessString = answerField.getText().trim();
 
-                            // Check if the input is empty
-                            if (currentGuessString.isEmpty()) {
-                                notificationLabel.setText("Your guess cannot be empty. Please try again!");
-
-                            }
-
-                            else {
-                                countdown.stop() ;
-                                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
-                                game.addGuess(guess);
-
-                                if (playerCount < numPlayers) {
-                                    playerCount++;
-                                    currentSecond  = 20 ;
-                                    showQuestionScreen(stage); // Move to the next player's turn
-                                } else {
-                                    playerCount = 1 ;
-                                    game.sortGuesses();
-                                    game.placeGuessesInSlots();
-                                    currentSecond = 20 ;
-                                    showTableScreen(stage); // Proceed to the next screen
-
-                                }
-                            }
-                        });
+                    if (currentSecond >1) {
+                        countdownLabel.setText(String.valueOf(--currentSecond ));
+//                        nextButton.setOnAction(e2 -> {
+//                            String currentGuessString = answerField.getText().trim();
+//
+//                            // Check if the input is empty
+//                            if (currentGuessString.isEmpty()) {
+//                                notificationLabel.setText("Your guess cannot be empty. Please try again!");
+//
+//                            }
+//
+//                            else {
+//                                countdown.stop() ;
+//                                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
+//                                game.addGuess(guess);
+//
+//                                if (playerCount < numPlayers) {
+//                                    playerCount++;
+//                                    currentSecond  = 20 ;
+//                                    showQuestionScreen(stage); // Move to the next player's turn
+//                                } else {
+//                                    playerCount = 1 ;
+//                                    game.sortGuesses();
+//                                    game.placeGuessesInSlots();
+//                                    currentSecond = 30 ;
+//                                    showTurnScreen(stage); // Proceed to the next screen
+//
+//                                }
+//                            }
+//                        });
                     } else {
 
                         countdownLabel.setText("0");
@@ -488,8 +536,8 @@ public class GUI extends Application {
                                         playerCount = 1 ;
                                         game.sortGuesses();
                                         game.placeGuessesInSlots();
-                                        currentSecond = 20 ;
-                                        showTableScreen(stage);
+                                        currentSecond = 30 ;
+                                        showTurnScreen(stage);
                                     }
                                 })
                         );
@@ -498,35 +546,7 @@ public class GUI extends Application {
                 })
         );
 
-//        // Next Button Logic
-//        nextButton.setOnAction(e -> {
-//            String currentGuessString = answerField.getText().trim();
 //
-//            // Check if the input is empty
-//            if (currentGuessString.isEmpty()) {
-//                notificationLabel.setText("Your guess cannot be empty. Please try again!");
-//
-//            }
-//
-//            else {
-//                countdown.stop() ;
-//                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
-//                game.addGuess(guess);
-//
-//                if (playerCount < numPlayers) {
-//                    playerCount++;
-//                    currentSecond  = 20 ;
-//                    showQuestionScreen(stage); // Move to the next player's turn
-//                } else {
-//                    playerCount = 1 ;
-//                    game.sortGuesses();
-//                    game.placeGuessesInSlots();
-//                    currentSecond = 20 ;
-//                    showTableScreen(stage); // Proceed to the next screen
-//
-//                }
-//            }
-//        });
         pauseButton.setOnAction(e -> {
 
             countdown.stop() ;
@@ -553,6 +573,25 @@ public class GUI extends Application {
 
         countdown.setCycleCount(20);
         countdown.play();
+    }
+
+    private void showTurnScreen(Stage stage) {
+
+        mainMenuPane.getChildren().clear() ;
+
+        turnLabel.setText(game.getPlayerName(playerCount -1  ) + ",Now is your betting turn!" ) ;
+
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> {
+            showTableScreen(stage);
+
+        });
+
+        mainMenuPane.getChildren().addAll(turnLabel) ;
+        pause.play();
+
+
     }
 
 
@@ -594,9 +633,10 @@ public class GUI extends Application {
 
     }
     private void showTableScreen(Stage stage) {
+        countdown.getKeyFrames().clear();
         mainMenuPane.getChildren().clear(); // Clear previous content
         hButtonBox.getChildren().clear();   // Clear horizontal layout
-        hButtonBox.setSpacing(10);          // Set spacing between button groups
+        hButtonBox.setSpacing(15);          // Set spacing between button groups
         hButtonBox.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
 
         StackPane.setAlignment(hButtonBox,Pos.BOTTOM_CENTER)  ;
@@ -604,7 +644,7 @@ public class GUI extends Application {
         // Pause button action
         pauseButton.setOnAction(e -> {
             countdown.stop();
-            currentSecond = Integer.parseInt(countdownLabel.getText());
+            currentSecond = Integer.parseInt(betCountDownLabel.getText());
             showPauseScreen(stage, 1);
         });
 
@@ -627,21 +667,57 @@ public class GUI extends Application {
 
             // Top text
             Text text1 = new Text(buttonLabels[i]);
-            text1.setStyle("-fx-fill: white; -fx-font-size: 18px; -fx-font-family: 'Comic Sans MS';");
+            if(i == 0 ) text1.setStyle("-fx-aligment: center;-fx-fill: #ed9b05; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+            else text1.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
 
+            text1.setRotate(180);
             // Button
             Button button = new Button();
 
 
-//            if(game.getValSlot(i) != -1  ){
-//                String valSlotStr = Long.toString(game.getValSlot(i) );
-//
-//                button.setText( valSlotStr ) ;
-//
-//
-//            }
-            button.setPrefWidth(120);
-            button.setPrefHeight(600);
+            if (i == 0) {
+                Text text3 = new Text();
+                text3.setText("ALL ANSWERS TOO HIGH");
+                text3.setStyle("-fx-alignment: center; -fx-fill: blue; -fx-font-size: 30px;"); // Increased font size
+                text3.setRotate(-90);
+                text3.setWrappingWidth(140); // Wrap the text within a specific width
+
+                button.setGraphic(text3);
+                if(currentSecond > 0 ) {
+                    button.setOnAction(e -> {
+
+                        currentSecond = Integer.parseInt(betCountDownLabel.getText());
+                        countdown.stop();
+                        showBetScreen(stage);
+
+                    });
+                }
+            } else if (game.getValSlot(i) != -1) {
+                Text text3 = new Text();
+                text3.setStyle("-fx-alignment: center; -fx-fill: white; -fx-font-size: 30px;"); // Increased font size
+                text3.setText(Long.toString(game.getValSlot(i)));
+                text3.setRotate(-90);
+                text3.setWrappingWidth(140); // Wrap the text within a specific width
+
+                button.setGraphic(text3);
+                if(currentSecond > 0 ) {
+                    button.setOnAction(e -> {
+
+                        currentSecond = Integer.parseInt(betCountDownLabel.getText());
+                        countdown.stop();
+                        showBetScreen(stage);
+
+                    });
+                }
+            }
+
+            button.setPrefWidth(150); // Fixed width
+            button.setPrefHeight(500); // Fixed height
+
+            button.setMaxWidth(150); // Maximum width
+            button.setMaxHeight(500); // Maximum height
+
+
             button.setStyle(
                     "-fx-background-color: transparent;" + // Transparent body
                             "-fx-border-color: white;" +           // White border
@@ -653,22 +729,47 @@ public class GUI extends Application {
             );
             // Bottom text (rotated)
             Text text2 = new Text(buttonLabels[i]);
-            text2.setStyle("-fx-fill: white; -fx-font-size: 18px; -fx-font-family: 'Comic Sans MS';");
-            text2.setRotate(180);
+            if (i == 0 )text2.setStyle("-fx-aligment: center;-fx-fill: #ed9b05; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+            else text2.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
 
             // Add text and button to VBox
+            vButtonBox.setAlignment(Pos.CENTER) ;
             vButtonBox.getChildren().addAll(text1, button, text2);
 
             // Add VBox to horizontal box
             hButtonBox.getChildren().add(vButtonBox);
         }
+        betCountDownLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 130px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+        betCountDownLabel.setText(Integer.toString(currentSecond) );
+
+        countdown.getKeyFrames().add(
+
+                new KeyFrame(Duration.seconds(1), e -> {
+
+                    if (currentSecond >1) {
+                        betCountDownLabel.setText(String.valueOf(--currentSecond ));
+                    } else {
+
+                        betCountDownLabel.setText("0");
+                        countdown.stop();
+
+
+                    }
+                })
+        );
 
         // Add components to the main pane
-        mainMenuPane.getChildren().addAll(mainTitle, hButtonBox, pauseButton);
+        mainMenuPane.getChildren().addAll(mainTitle, hButtonBox, pauseButton, betCountDownLabel);
+        countdown.setCycleCount(30);
+        countdown.play();
 
 
     }
 
+    private void showBetScreen(Stage stage) {
+
+    }
 
     public static void main(String[] args) {
         launch(args);
