@@ -1,7 +1,7 @@
 package com.nhan.witsandwagers;
 import java.io.*;
 import java.util.*;
-import java.math.*;
+
 // Represents the main game logic
 public class Game {
     private List<Player> players = new ArrayList<>();
@@ -82,8 +82,8 @@ public class Game {
     }
     public void removePlayer(){
 
-                players.remove(players.size() - 1);
-                playerNames.remove(playerNames.size() - 1);
+        players.remove(players.size() - 1);
+        playerNames.remove(playerNames.size() - 1);
     }
 
     public void clearGame() {
@@ -165,6 +165,10 @@ public class Game {
 
     public long getValSlot(int idx){
         return this.slots[idx] ;
+    }
+
+    public Player getPlayer(int idx) {
+        return this.players.get(idx) ;
     }
 
     // Display the slots
@@ -287,11 +291,11 @@ public class Game {
             if (player.getBetIdx() == winningSlot) {
                 int bonus = calculateBonus(winningSlot, player.getBetAmounts());
                 System.out.println(player.getName() + " wins and gets " + bonus + " points!");
-                player.setPoints(player.getPoints() + bonus);
+                player.setFund(player.getFund() + bonus);
 
             } else {
                 System.out.println(player.getName() + " loses " + player.getBetAmounts() + " points!");
-                player.setPoints(player.getPoints() - player.getBetAmounts());
+                player.setFund(player.getFund() - player.getBetAmounts());
 
             }
         }
@@ -301,7 +305,7 @@ public class Game {
     public void displayScores() {
         System.out.println("\nCurrent Scores:");
         for (Player player : players) {
-            System.out.println(player.getName() + ": " + player.getPoints() + " points");
+            System.out.println(player.getName() + ": " + player.getFund() + " points");
         }
     }
 

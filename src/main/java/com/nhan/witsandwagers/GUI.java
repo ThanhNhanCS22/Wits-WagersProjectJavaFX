@@ -45,7 +45,8 @@ public class GUI extends Application {
 
     private HBox hButtonBox = new HBox() ; // To arrange buttons horizontally
 
-    private Label questionNumTitle  = new Label( ) ;
+    private Label questionNumTitleOfShowGuessScreen = new Label( ) ;
+    private Label questionNumTitleOfShowQuestionScreen = new Label() ;
     private Label questionTitle = new Label() ;
     private VBox vTitleBox =new VBox() ;
     private Label requestPlayerLabel = new Label() ;
@@ -66,8 +67,8 @@ public class GUI extends Application {
     private Button exitGameButton = new Button("Exit Game");
     private Label mainTitle = new Label("WITS & WAGERS");
 
-    private int questionCount = 1 ;
-    private int playerCount = 1 ;
+    private int questionCount ;
+    private int playerCount ;
 
     private Label countdownLabel = new Label();
 
@@ -82,6 +83,9 @@ public class GUI extends Application {
 
     private Label turnLabel = new Label() ;
 
+    private Label playerNameLabel= new Label() ;
+
+    private Label playerBalance = new Label() ;
 
 
     @Override
@@ -104,32 +108,30 @@ public class GUI extends Application {
 //                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
         );
 
-        questionNumTitle.setStyle(
+        questionNumTitleOfShowGuessScreen.setStyle(
                 "-fx-text-fill: darkorange;" +
                         "-fx-font-size: 50px;" + // Font size
                         "-fx-font-family: 'Comic Sans MS';"  // Font family
 //                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
 //                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
         );
-
-        turnLabel.setStyle(
-                "-fx-text-fill: #e4d209;" +
-                        "-fx-font-size: 80px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  // Font family
-//                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-//                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);"
+        questionNumTitleOfShowQuestionScreen.setStyle(
+                "-fx-text-fill: #ffffff;" +
+                        "-fx-font-size: 150px;" + // Font size
+                        "-fx-font-family: 'Comic Sans MS';"  +// Font family
+                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
+                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
         );
-        
-        turnLabel.setPrefWidth(2000);
-        turnLabel.setMaxWidth(2000);
-        StackPane.setAlignment(turnLabel, Pos.CENTER);
 
-//        questionNumTitle.setAlignment(Pos.CENTER);
-//        questionTitle.setAlignment(Pos.CENTER);
+        turnLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+        playerNameLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+        playerBalance.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 60px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
-        StackPane.setAlignment(questionNumTitle, Pos.TOP_CENTER);
-        StackPane.setMargin(questionNumTitle, new Insets(50, 0,0, 0)); // Optional: Adjust margin to control spacing
+        StackPane.setAlignment(questionNumTitleOfShowGuessScreen, Pos.TOP_CENTER);
+        StackPane.setMargin(questionNumTitleOfShowGuessScreen, new Insets(50, 0,0, 0)); // Optional: Adjust margin to control spacing
 
 
         StackPane.setAlignment(questionTitle, Pos.TOP_CENTER);
@@ -294,7 +296,8 @@ public class GUI extends Application {
             int finalI = i;
             playerButtons[i].setOnAction(e -> {
                 numPlayers = finalI + 2 ;
-                inputPlayersName(  stage);
+                playerCount = 1 ;
+                inputPlayersNameScreen(  stage);
             });
         }
 
@@ -306,7 +309,7 @@ public class GUI extends Application {
         mainMenuStatus = true;
     }
 
-    private void inputPlayersName( Stage stage) {
+    private void inputPlayersNameScreen(Stage stage) {
         // Clear the current children of the main pane
         mainMenuPane.getChildren().clear();
         nameField.clear() ;
@@ -333,7 +336,7 @@ public class GUI extends Application {
                 game.addPlayer(name);
                 if (playerCount < numPlayers) {
                     playerCount++;
-                    inputPlayersName(  stage);
+                    inputPlayersNameScreen(  stage);
                 } else {
                     notificationLabel.setText("");
                     showReadyToPlayScreen( stage );
@@ -346,7 +349,7 @@ public class GUI extends Application {
             if (playerCount > 1) {
                 game.removePlayer();
                 playerCount -- ;
-                inputPlayersName(  stage);
+                inputPlayersNameScreen(  stage);
             } else {
                 showPlayerSelectionScreen( stage);
             }
@@ -378,7 +381,7 @@ public class GUI extends Application {
         backButton.setOnAction(e -> {
 
             game.removePlayer();
-            inputPlayersName(  stage);
+            inputPlayersNameScreen(  stage);
         });
 
         vButtonBox.getChildren().addAll(readyLabel, playGameButton, backButton);
@@ -413,6 +416,7 @@ public class GUI extends Application {
                         countdownLabel.setText("Here we go!");
                         countdown.stop();
                         currentSecond = 20 ;
+                        questionCount = 1 ;
                         playerCount = 1;
                         Timeline delay = new Timeline(
                                 new KeyFrame(Duration.seconds(1), event -> showQuestionScreen( stage))
@@ -425,7 +429,32 @@ public class GUI extends Application {
         countdown.setCycleCount(3);
         countdown.play();
     }
-    private void showQuestionScreen(Stage stage) {
+
+    private void showQuestionScreen(Stage stage ){
+
+        mainMenuPane.getChildren().clear() ;
+
+
+
+
+        questionNumTitleOfShowQuestionScreen.setText("Question " + questionCount);
+
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> {
+            currentSecond = 20;
+            showGuessScreen(stage);
+
+        });
+
+        mainMenuPane.getChildren().addAll(questionNumTitleOfShowQuestionScreen) ;
+        pause.play();
+
+
+
+
+    }
+    private void showGuessScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear();
         vButtonBox.getChildren().clear();
@@ -437,7 +466,7 @@ public class GUI extends Application {
 
         paused = false ;
 
-        questionNumTitle.setText("Question " + questionCount );
+        questionNumTitleOfShowGuessScreen.setText("Question " + questionCount );
         questionTitle.setText(game.getQuestion(questionCount - 1));
         requestPlayerLabel.setText(game.getPlayerName(playerCount - 1) + ", let's try guessing a number!");
 //        backgroundImage.setImage(new Image("file:question_bg.jpg"));
@@ -461,7 +490,7 @@ public class GUI extends Application {
                    if (playerCount < numPlayers) {
                        playerCount++;
                        currentSecond = 20;
-                       showQuestionScreen(stage); // Move to the next player's turn
+                       showGuessScreen(stage); // Move to the next player's turn
                    } else {
                        playerCount = 1;
                        game.sortGuesses();
@@ -530,7 +559,7 @@ public class GUI extends Application {
                                     if(playerCount < numPlayers) {
                                         playerCount++;
                                         currentSecond = 20 ;
-                                        showQuestionScreen(stage);
+                                        showGuessScreen(stage);
                                     }
                                     else {
                                         playerCount = 1 ;
@@ -569,7 +598,7 @@ public class GUI extends Application {
 
 
         vButtonBox.getChildren().addAll(requestPlayerLabel, answerField, nextButton,notificationLabel);
-        mainMenuPane.getChildren().addAll( questionNumTitle, questionTitle,countdownLabel, note, vButtonBox,pauseButton);
+        mainMenuPane.getChildren().addAll(questionNumTitleOfShowGuessScreen, questionTitle,countdownLabel, note, vButtonBox,pauseButton);
 
         countdown.setCycleCount(20);
         countdown.play();
@@ -578,17 +607,23 @@ public class GUI extends Application {
     private void showTurnScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear() ;
+        vButtonBox.getChildren().clear() ;
+        vButtonBox.setSpacing(10);
 
-        turnLabel.setText(game.getPlayerName(playerCount -1  ) + ",Now is your betting turn!" ) ;
+        playerNameLabel.setText(game.getPlayerName(playerCount -1  ) ) ;
 
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        turnLabel.setText( "Now is your betting turn!" ) ;
+
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> {
             showTableScreen(stage);
 
         });
 
-        mainMenuPane.getChildren().addAll(turnLabel) ;
+        vButtonBox.getChildren().addAll(playerNameLabel,turnLabel);
+        mainMenuPane.getChildren().addAll(vButtonBox) ;
         pause.play();
 
 
@@ -621,10 +656,13 @@ public class GUI extends Application {
         playGameButton.setOnAction(e-> {
 
             if(chooseScreen == 0 ){
-                showQuestionScreen(stage)  ;
+                showGuessScreen(stage)  ;
             }
             if(chooseScreen == 1 ){
                 showTableScreen(stage) ;
+            }
+            if(chooseScreen == 2 ){
+                showBetScreen(stage);
             }
         }) ;
 
@@ -648,7 +686,48 @@ public class GUI extends Application {
             showPauseScreen(stage, 1);
         });
 
-        String[] buttonLabels = {
+
+        betCountDownLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: gold; -fx-font-size: 130px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+        betCountDownLabel.setText(Integer.toString(currentSecond) );
+
+        countdown.getKeyFrames().add(
+
+                new KeyFrame(Duration.seconds(1), e -> {
+
+                    if (currentSecond >1) {
+                        betCountDownLabel.setText(String.valueOf(--currentSecond ));
+                    } else {
+
+                        betCountDownLabel.setText("0");
+                        countdown.stop();
+                        game.getPlayer(playerCount - 1).setBetIdx(0);
+                        game.getPlayer(playerCount -1 ).setBetAmounts(0);
+
+
+                        Timeline delay = new Timeline(
+                                new KeyFrame(Duration.seconds(1), event -> {
+                                    if(playerCount < numPlayers)  {
+                                        playerCount++;
+                                        currentSecond= 30 ;
+                                        showTurnScreen(stage)  ;
+                                    }
+                                    else{
+                                        playerCount = 1 ;
+                                        questionCount++;
+                                        showBonusScreen(stage ) ;
+                                    }
+
+
+                                })
+                        );
+                        delay.play();
+
+
+                    }
+                })
+        );
+        String[] buttonSlotLabels = {
                 "6to1",
                 "5to1",
                 "4to1",
@@ -666,8 +745,8 @@ public class GUI extends Application {
             vButtonBox.setSpacing(5); // Space between text and button
 
             // Top text
-            Text text1 = new Text(buttonLabels[i]);
-            if(i == 0 ) text1.setStyle("-fx-aligment: center;-fx-fill: #ed9b05; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+            Text text1 = new Text(buttonSlotLabels[i]);
+            if(i == 0 ) text1.setStyle("-fx-aligment: center;-fx-fill: #f6e406; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
             else text1.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
 
             text1.setRotate(180);
@@ -678,9 +757,9 @@ public class GUI extends Application {
             if (i == 0) {
                 Text text3 = new Text();
                 text3.setText("ALL ANSWERS TOO HIGH");
-                text3.setStyle("-fx-alignment: center; -fx-fill: blue; -fx-font-size: 30px;"); // Increased font size
+                text3.setStyle("-fx-alignment: center; -fx-fill: blue; -fx-font-size: 25px;"); // Increased font size
                 text3.setRotate(-90);
-                text3.setWrappingWidth(140); // Wrap the text within a specific width
+                text3.setWrappingWidth(160); // Wrap the text within a specific width
 
                 button.setGraphic(text3);
                 if(currentSecond > 0 ) {
@@ -688,33 +767,36 @@ public class GUI extends Application {
 
                         currentSecond = Integer.parseInt(betCountDownLabel.getText());
                         countdown.stop();
+                        game.getPlayer(playerCount -1 ).setBetIdx(0);
                         showBetScreen(stage);
 
                     });
                 }
             } else if (game.getValSlot(i) != -1) {
                 Text text3 = new Text();
-                text3.setStyle("-fx-alignment: center; -fx-fill: white; -fx-font-size: 30px;"); // Increased font size
+                text3.setStyle("-fx-alignment: center; -fx-fill: white; -fx-font-size: 25px;"); // Increased font size
                 text3.setText(Long.toString(game.getValSlot(i)));
                 text3.setRotate(-90);
-                text3.setWrappingWidth(140); // Wrap the text within a specific width
+                text3.setWrappingWidth(160); // Wrap the text within a specific width
 
                 button.setGraphic(text3);
                 if(currentSecond > 0 ) {
+                    int finalI = i;
                     button.setOnAction(e -> {
 
                         currentSecond = Integer.parseInt(betCountDownLabel.getText());
                         countdown.stop();
+                        game.getPlayer(playerCount -1 ).setBetIdx(finalI);
                         showBetScreen(stage);
 
                     });
                 }
             }
 
-            button.setPrefWidth(150); // Fixed width
+            button.setPrefWidth(180); // Fixed width
             button.setPrefHeight(500); // Fixed height
 
-            button.setMaxWidth(150); // Maximum width
+            button.setMaxWidth(180); // Maximum width
             button.setMaxHeight(500); // Maximum height
 
 
@@ -728,8 +810,8 @@ public class GUI extends Application {
                             "-fx-padding: 10;"                    // Padding inside button
             );
             // Bottom text (rotated)
-            Text text2 = new Text(buttonLabels[i]);
-            if (i == 0 )text2.setStyle("-fx-aligment: center;-fx-fill: #ed9b05; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+            Text text2 = new Text(buttonSlotLabels[i]);
+            if (i == 0 )text2.setStyle("-fx-aligment: center;-fx-fill: #f6e406; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
             else text2.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
 
             // Add text and button to VBox
@@ -739,7 +821,69 @@ public class GUI extends Application {
             // Add VBox to horizontal box
             hButtonBox.getChildren().add(vButtonBox);
         }
-        betCountDownLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 130px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+        // Add components to the main pane
+        mainMenuPane.getChildren().addAll(mainTitle, hButtonBox, pauseButton, betCountDownLabel);
+        countdown.setCycleCount(30);
+        countdown.play();
+
+
+    }
+
+    private void showBetScreen(Stage stage) {
+        mainMenuPane.getChildren().clear() ;
+        hButtonBox.getChildren().clear() ;
+        vButtonBox.getChildren().clear();
+        countdown.getKeyFrames().clear( );
+        vButtonBox.setSpacing(80);
+        hButtonBox.setSpacing(40);
+
+
+
+        playerBalance.setText("Your Current Balance: "+ game.getPlayer(playerCount - 1 ).getFund()+"$") ;
+
+
+        String[] buttonMoneyLabels = {
+                "100$",
+                "500$",
+                "1000$",
+                "5000$",
+                "10000$"
+        };
+
+
+        for( int i = 0 ; i < 5 ; i++){
+            Button moneyButton = new Button() ;
+            moneyButton.setText(buttonMoneyLabels[i]);
+            moneyButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.118));
+            moneyButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.000008));
+            moneyButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #dc6606; -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            int finalI = i;
+            if(currentSecond > 0 ) {
+                moneyButton.setOnAction(e -> {
+                    countdown.stop() ;
+
+                    if (finalI == 0) game.getPlayer(playerCount - 1).setBetAmounts(100);
+                    else if (finalI == 1) game.getPlayer(playerCount - 1).setBetAmounts(500);
+                    else if (finalI == 2) game.getPlayer(playerCount - 1).setBetAmounts(1000);
+                    else if (finalI == 3) game.getPlayer(playerCount - 1).setBetAmounts(5000);
+                    else if (finalI == 4) game.getPlayer(playerCount - 1).setBetAmounts(10000);
+
+                    if (playerCount < numPlayers) {
+                        playerCount++;
+                        currentSecond = 30;
+                        showTurnScreen(stage);
+                    } else {
+                        playerCount = 1;
+                        questionCount++;
+                        showBonusScreen(stage);
+                    }
+
+                });
+            }
+            hButtonBox.getChildren().addAll(moneyButton);
+
+        }
 
         betCountDownLabel.setText(Integer.toString(currentSecond) );
 
@@ -754,21 +898,53 @@ public class GUI extends Application {
                         betCountDownLabel.setText("0");
                         countdown.stop();
 
+                        game.getPlayer(playerCount -1 ).setBetAmounts(0);
+
+
+                        Timeline delay = new Timeline(
+                                new KeyFrame(Duration.seconds(1), event -> {
+                                    if(playerCount < numPlayers)  {
+                                        playerCount++;
+                                        currentSecond= 30 ;
+                                        showTurnScreen(stage)  ;
+                                    }
+                                    else{
+                                        playerCount = 1 ;
+                                        questionCount++;
+                                        showBonusScreen(stage ) ;
+                                    }
+
+
+                                })
+                        );
+                        delay.play();
+
 
                     }
                 })
         );
 
-        // Add components to the main pane
-        mainMenuPane.getChildren().addAll(mainTitle, hButtonBox, pauseButton, betCountDownLabel);
-        countdown.setCycleCount(30);
+
+
+        pauseButton.setOnAction(e-> {
+            countdown.stop() ;
+            currentSecond = Integer.parseInt(betCountDownLabel.getText());
+            showPauseScreen(stage, 2  );
+        }) ;
+
+        vButtonBox.getChildren().addAll(betCountDownLabel, playerBalance, hButtonBox);
+        mainMenuPane.getChildren().addAll(mainTitle,vButtonBox,pauseButton) ;
+
+        countdown.setCycleCount(currentSecond);
         countdown.play();
 
 
+
+
+
     }
-
-    private void showBetScreen(Stage stage) {
-
+    private void showBonusScreen(Stage stage) {
+        mainMenuPane.getChildren().clear();
     }
 
     public static void main(String[] args) {

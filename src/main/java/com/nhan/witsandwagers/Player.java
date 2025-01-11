@@ -2,14 +2,14 @@ package com.nhan.witsandwagers;
 
 public class Player {
     private String name;
-    private int points;
+    private int fund;
 
     private int betIdx;
     private int betAmounts;
 
     protected Player(String name) {
         this.name = name;
-        this.points = 70000;
+        this.fund = 70000;
     }
 
     public void setName(String name) {
@@ -20,12 +20,12 @@ public class Player {
         return this.name;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setFund(int fund) {
+        this.fund = fund;
     }
 
-    public int getPoints() {
-        return this.points;
+    public int getFund() {
+        return this.fund;
     }
 
 
