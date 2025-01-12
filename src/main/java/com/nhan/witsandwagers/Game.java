@@ -104,11 +104,13 @@ public class Game {
     public void sortGuesses (){
         sortedUniqueGuesses = new ArrayList<>(uniqueGuesses);
     }
+    public void clearGuesses() {
+        uniqueGuesses.clear();
+    }
 
     // Place guesses into the 8 slots around slot 4
     public void placeGuessesInSlots() {
         Arrays.fill(slots, (long)-1);
-        slots[0] = (long) -1; // Slot 0 represents "All Guesses Too High"
 
         int size = sortedUniqueGuesses.size();
 
@@ -350,6 +352,19 @@ public class Game {
         for (Player player : players) {
             System.out.println(player.getName() + ": " + player.getFund() + " points");
         }
+    }
+
+    public List<Player>  getWinners() {
+        int maxFund = players.stream().mapToInt(p -> p.getFund()).max().orElse(0);
+
+        List<Player> winners = new ArrayList<>();
+        for (Player player : players) {
+            if (player.getFund() == maxFund) {
+                winners.add(player);
+            }
+        }
+
+        return winners ;
     }
 
     // Play the full game

@@ -21,9 +21,7 @@ public class Player {
     public boolean getBetStatus() {
         return this.betStatus ;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public String getName() {
         return this.name;
@@ -53,5 +51,6 @@ public class Player {
     public int getBetAmounts() {
         return this.betAmounts;
     }
+
 
 }

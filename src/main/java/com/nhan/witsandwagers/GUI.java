@@ -35,8 +35,6 @@ public class GUI extends Application {
     // Background image
 //    private ImageView backgroundImage = new ImageView();
 
-
-
     // Buttons
     private Button nextButton = new Button("Next");
 
@@ -48,12 +46,14 @@ public class GUI extends Application {
     private HBox hButtonBox = new HBox() ; // To arrange buttons horizontally
 
     private Label questionNumTitleOfShowGuessScreen = new Label( ) ;
-    private Label questionNumTitleOfShowQuestionScreen = new Label() ;
+
+
+
     private Label questionTitle = new Label() ;
     private VBox vTitleBox =new VBox() ;
     private Label requestPlayerLabel = new Label() ;
 
-    private Label nameLabel = new Label();
+    private Label inputNameLabel = new Label();
     private TextField nameField = new TextField();
 
     private TextField answerField = new TextField() ;
@@ -67,8 +67,10 @@ public class GUI extends Application {
     private Button playGameButton = new Button();
 
     private Button exitGameButton = new Button("Exit Game");
+
     private Label mainTitle = new Label("WITS & WAGERS");
 
+    private Label winnersTitle = new Label("WINNER(S)") ;
     private int questionCount ;
     private int playerCount ;
 
@@ -83,11 +85,11 @@ public class GUI extends Application {
     private int currentSecond ;
     private Boolean paused  ;
 
-    private Label turnLabel = new Label() ;
+    private Label waitingScreenLabel = new Label() ;
 
     private Label playerNameLabel= new Label() ;
 
-    private Label playerBalance = new Label() ;
+    private Label playerBalanceLabel = new Label() ;
 
     private Label bonusLabel = new Label() ;
 
@@ -96,6 +98,14 @@ public class GUI extends Application {
     private Label correctAnswerLabel = new Label() ;
 
     private Label winningGuessLabel = new Label() ;
+
+    private String[] buttonSlotLabels ;
+
+    private Label chosenSLotLabel = new Label() ;
+
+    private int winnersCount  = 0 ;
+
+
     @Override
     public void start(Stage primaryStage) {
         mainMenuPane.getChildren().clear();
@@ -108,42 +118,22 @@ public class GUI extends Application {
 
         playGameButton.setText("Play Game") ;
 
-        questionTitle.setStyle(
-                "-fx-text-fill: darkorange;" +
-                        "-fx-font-size: 50px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  // Font family
-//                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-//                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
-        );
+        questionTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ff8800;" +
+                " -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
-        questionNumTitleOfShowGuessScreen.setStyle(
-                "-fx-text-fill: darkorange;" +
-                        "-fx-font-size: 50px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  // Font family
-//                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-//                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
-        );
-        questionNumTitleOfShowQuestionScreen.setStyle(
-                "-fx-text-fill: #ffffff;" +
-                        "-fx-font-size: 150px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  +// Font family
-                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
-        );
-
-        bonusLabel.setStyle(
-                "-fx-text-fill: #ffffff;" +
-                        "-fx-font-size: 150px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  +// Font family
-                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);");
+        questionNumTitleOfShowGuessScreen.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ff8800;" +
+                " -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
-        turnLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        bonusLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                " -fx-font-size: 150px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+
+        waitingScreenLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
         playerNameLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
-        playerBalance.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 60px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        playerBalanceLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
         StackPane.setAlignment(questionNumTitleOfShowGuessScreen, Pos.TOP_CENTER);
@@ -157,23 +147,19 @@ public class GUI extends Application {
         requestPlayerLabel.setStyle("-fx-font-size: 30px; -fx-text-fill: #ffffff; -fx-font-family: 'Comic Sans MS';");
 
 
-        nameLabel.setStyle("-fx-font-size: 30px; -fx-text-fill: #ffffff; -fx-font-family: 'Comic Sans MS';");
+        inputNameLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                " -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
         betCountDownLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: gold; -fx-font-size: 130px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
-        correctAnswerLabel.setStyle(
-                "-fx-text-fill: #ffffff;" +
-                        "-fx-font-size: 40px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  +// Font family
-                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);");
+        correctAnswerLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
-        winningGuessLabel.setStyle(
-                "-fx-text-fill: #ffffff;" +
-                        "-fx-font-size: 40px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';"  +// Font family
-                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);");
+        winningGuessLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+        chosenSLotLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                " -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
 
@@ -206,7 +192,7 @@ public class GUI extends Application {
         answerField.setAlignment(Pos.CENTER);
 
 
-        notificationLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
+        notificationLabel.setStyle("-fx-font-size: 25px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
 
 
 
@@ -221,8 +207,6 @@ public class GUI extends Application {
         StackPane.setAlignment(pauseButton, Pos.TOP_LEFT); // Position at the top-left corner
         StackPane.setMargin(pauseButton, new Insets(30, 0, 0, 30)); // Add margin for spacing
 
-        StackPane.setAlignment(betCountDownLabel, Pos.TOP_RIGHT) ;
-        StackPane.setMargin(betCountDownLabel, new Insets(30, 100, 0, 0)); // Add margin for spacing
 
 
 
@@ -239,6 +223,17 @@ public class GUI extends Application {
         // Position the title at the top and center
         StackPane.setAlignment(mainTitle, Pos.TOP_CENTER);
         StackPane.setMargin(mainTitle, new Insets(50, 0, 0, 0)); // Add margin from the top
+
+        winnersTitle.setStyle(
+                "-fx-text-fill: #f8f403;" +
+                        "-fx-font-size: 88px;" + // Font size
+                        "-fx-font-family: 'Comic Sans MS';" + // Font family
+                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
+                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
+        );
+
+        StackPane.setAlignment(winnersTitle, Pos.TOP_CENTER);
+        StackPane.setMargin(winnersTitle, new Insets(50, 0, 0, 0)); // Add margin from the top
 
 
         note.setStyle(
@@ -349,15 +344,22 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear() ;
         vButtonBox.setSpacing(10) ;
 
+
+
         hButtonBox.getChildren().clear() ;
         hButtonBox.setSpacing(200 );
         hButtonBox.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
+
+        VBox localVBox = new VBox() ;
+
+        localVBox.setSpacing(30);
+        localVBox.setAlignment(Pos.CENTER);
 
         notificationLabel.setText("");
         // Background image
 //        backgroundImage.setImage(new Image("file:player_select_bg.jpg"));
 
-        nameLabel.setText("Please enter a name for Player " + (playerCount ));
+        inputNameLabel.setText("Please enter a name for Player " + (playerCount ));
 
         nextButton.setOnAction(e -> {
             String name = nameField.getText().trim();
@@ -390,8 +392,9 @@ public class GUI extends Application {
 
         hButtonBox.getChildren().addAll(backButton, nextButton);
 
-        vButtonBox.getChildren().addAll(nameLabel, nameField, hButtonBox, notificationLabel);
-        mainMenuPane.getChildren().addAll( mainTitle ,vButtonBox);
+        vButtonBox.getChildren().addAll( nameField, hButtonBox, notificationLabel);
+        localVBox.getChildren().addAll(inputNameLabel,vButtonBox) ;
+        mainMenuPane.getChildren().addAll( mainTitle ,localVBox);
     }
 
     private void showReadyToPlayScreen(Stage stage )  {
@@ -403,7 +406,7 @@ public class GUI extends Application {
 
 
         Label readyLabel = new Label("Are you ready to play ?" );
-        readyLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: rgba(246,190,6,0.94); -fx-font-size: 60px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        readyLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: rgba(246,98,6,0.94); -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
         playGameButton.setText("Play") ;
@@ -470,7 +473,7 @@ public class GUI extends Application {
 
 
 
-        questionNumTitleOfShowQuestionScreen.setText("Question " + questionCount);
+        waitingScreenLabel.setText("Question " + questionCount);
 
 
         pause.setDuration(Duration.seconds(2));
@@ -480,7 +483,7 @@ public class GUI extends Application {
 
         });
 
-        mainMenuPane.getChildren().addAll(questionNumTitleOfShowQuestionScreen) ;
+        mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
         pause.play();
 
 
@@ -646,16 +649,18 @@ public class GUI extends Application {
         playerNameLabel.setText(game.getPlayerName(playerCount -1  ) ) ;
 
 
-        turnLabel.setText( "Now is your betting turn!" ) ;
+        waitingScreenLabel.setText( "Now is your betting turn!" ) ;
 
 
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
+            game.getPlayer(playerCount - 1 ).setBetStatus(true );
+
             showTableScreen(stage);
 
         });
 
-        vButtonBox.getChildren().addAll(playerNameLabel,turnLabel);
+        vButtonBox.getChildren().addAll(playerNameLabel, waitingScreenLabel);
         mainMenuPane.getChildren().addAll(vButtonBox) ;
         pause.play();
 
@@ -712,6 +717,10 @@ public class GUI extends Application {
 
         StackPane.setAlignment(hButtonBox,Pos.BOTTOM_CENTER)  ;
         StackPane.setMargin(hButtonBox, new Insets(200,0, 0 ,0 ) ) ;
+
+        StackPane.setAlignment(betCountDownLabel, Pos.TOP_RIGHT) ;
+        StackPane.setMargin(betCountDownLabel, new Insets(30, 100, 0, 0)); // Add margin for spacing
+
         // Pause button action
         pauseButton.setOnAction(e -> {
             countdown.stop();
@@ -760,7 +769,7 @@ public class GUI extends Application {
                     }
                 })
         );
-        String[] buttonSlotLabels = {
+        buttonSlotLabels = new String[]{
                 "6to1",
                 "5to1",
                 "4to1",
@@ -868,12 +877,19 @@ public class GUI extends Application {
         hButtonBox.getChildren().clear() ;
         vButtonBox.getChildren().clear();
         countdown.getKeyFrames().clear( );
-        vButtonBox.setSpacing(80);
+        vButtonBox.setSpacing(60);
         hButtonBox.setSpacing(40);
 
 
 
-        playerBalance.setText("Your Current Balance: "+ game.getPlayer(playerCount - 1 ).getFund()+"$") ;
+        playerBalanceLabel.setText("Your Current Balance: "+ game.getPlayer(playerCount - 1 ).getFund()+"$") ;
+
+        long slotVal = game.getValSlot(game.getPlayer(playerCount -1 ).getBetIdx());
+        if(slotVal != -1 ) {
+            chosenSLotLabel.setText("Your chosen slot: \"" + slotVal + "\"");
+        }
+        else chosenSLotLabel.setText("Your chosen slot: \"ALL ANSWERS TOO HIGH\""
+        );
 
 
         String[] buttonMoneyLabels = {
@@ -973,8 +989,8 @@ public class GUI extends Application {
 
         });
 
-        vButtonBox.getChildren().addAll(betCountDownLabel, playerBalance, hButtonBox, backButton);
-        mainMenuPane.getChildren().addAll(mainTitle,vButtonBox,pauseButton) ;
+        vButtonBox.getChildren().addAll( chosenSLotLabel, playerBalanceLabel,hButtonBox, backButton);
+        mainMenuPane.getChildren().addAll(mainTitle,betCountDownLabel,vButtonBox,pauseButton) ;
 
         countdown.setCycleCount(currentSecond);
         countdown.play();
@@ -990,8 +1006,8 @@ public class GUI extends Application {
         pause.setDuration(Duration.seconds(2) );
 
         pause.setOnFinished(event -> {
-            currentSecond = 6 + numPlayers ;
-            showBonusScreen( stage );
+            currentSecond = 4 + numPlayers ;
+            showBonusDetailScreen( stage );
 
 
         });
@@ -1003,11 +1019,14 @@ public class GUI extends Application {
 
 
     }
-    private void showBonusScreen(Stage stage ) {
+    private void showBonusDetailScreen(Stage stage ) {
         mainMenuPane.getChildren().clear() ;
         vButtonBox.getChildren().clear() ;
         countdown.getKeyFrames().clear() ;
         vButtonBox.setSpacing(35) ;
+        correctAnswerLabel.setText("");
+        winningGuessLabel.setText("");
+
 
         VBox newVBox = new VBox() ;
 
@@ -1027,13 +1046,9 @@ public class GUI extends Application {
 
         for(int i = 0 ; i < numPlayers; i++) {
             bonusLabelList.add(new Label());
-            bonusLabelList.get(i).setStyle(
-                    "-fx-text-fill: white;" +
-                            "-fx-font-size: 40px;" + // Font size
-                            "-fx-font-family: 'Comic Sans MS';" + // Font family
-                            "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-                            "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
-            );
+            bonusLabelList.get(i).setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
 
             vButtonBox.getChildren().add(bonusLabelList.get(i)) ;
 
@@ -1057,7 +1072,7 @@ public class GUI extends Application {
 
 
                     if (currentSecond == timeToShowAnswer ) {
-                        correctAnswerLabel.setText("The correct answer is: " + correctAnswer) ;
+                        correctAnswerLabel.setText("Correct Answer: " + correctAnswer) ;
                     }
                     else if(currentSecond == timeToShowWinningGuess) {
                         if(winGuess == null )
@@ -1066,7 +1081,7 @@ public class GUI extends Application {
                         else winningGuessLabel.setText("Winning Guess: " + winGuess) ;
                     }
 
-                    else if (playerCount<= numPlayers && currentSecond >2 && currentSecond < timeToShowWinningGuess ) {
+                    else if (playerCount<= numPlayers) {
                         Player player = game.getPlayer(playerCount - 1 ) ;
                         if (!player.getBetStatus()  ) {
 
@@ -1095,11 +1110,11 @@ public class GUI extends Application {
                             int bonus = game.calculateBonus(game.getWinSlot(winGuess), player.getBetAmounts());
                             player.setFund(player.getFund() + bonus);
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
-                                                                                + " gets "+ bonus + "$") ;
+                                                                                + " wins "+ bonus + "$") ;
                             playerCount++ ;
                         }
 
-                    } else if (currentSecond< 1 ) {
+                    } else {
 
                         countdown.stop();
 
@@ -1108,7 +1123,7 @@ public class GUI extends Application {
                                     if(questionCount  < 7)  {
                                         playerCount =1 ;
                                         questionCount ++;
-                                        currentSecond= 20  ;
+                                        game.clearGuesses();
                                         showQuestionScreen(stage)  ;
                                     }
                                     else{
@@ -1134,6 +1149,81 @@ public class GUI extends Application {
 
     }
     private void showResultScreen(Stage stage ){
+        mainMenuPane.getChildren().clear() ;
+
+
+
+        waitingScreenLabel.setText( "Final Result" ) ;
+
+
+        pause.setDuration(Duration.seconds(2));
+        pause.setOnFinished(event -> {
+            showResultDetailScreen(stage);
+
+        });
+
+
+        mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
+        pause.play();
+    }
+
+    private void showResultDetailScreen(Stage stage){
+
+        mainMenuPane.getChildren().clear() ;
+        vButtonBox.getChildren().clear() ;
+        countdown.getKeyFrames().clear() ;
+        vButtonBox.setSpacing(30);
+
+
+        List<Label> winnnersLalelList = new ArrayList<>();
+
+        List<Player> winners = game.getWinners() ;
+
+
+
+        for(int i = 0 ; i < winners.size() ; i ++){
+            winnnersLalelList.add(new Label());
+            winnnersLalelList.get(i).setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #f1de06;" +
+                    " -fx-font-size: 60px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+            vButtonBox.getChildren().add(winnnersLalelList.get(i)) ;
+        }
+
+
+
+        countdown.getKeyFrames().add(
+
+
+                new KeyFrame(Duration.seconds(1), e -> {
+
+
+                  if (winnersCount < winners.size()  ) {
+                      winnnersLalelList.get(winnersCount).setText(winners.get(winnersCount).getName() + " is the winner with "
+                                                                            + winners.get(winnersCount).getFund()+"$");
+
+                      winnersCount++;
+
+                    } else {
+
+                        countdown.stop();
+
+                        Timeline delay = new Timeline(
+                                new KeyFrame(Duration.seconds(2), event -> {
+
+                                    start(stage ) ;
+
+                                })
+                        );
+                        delay.play();
+
+
+                    }
+                })
+        );
+        mainMenuPane.getChildren().addAll(winnersTitle, vButtonBox);
+        countdown.setCycleCount(winners.size() +  1 );
+        countdown.play() ;
+
 
     }
     public static void main(String[] args) {
