@@ -6,12 +6,21 @@ public class Player {
 
     private int betIdx;
     private int betAmounts;
+    private boolean betStatus;
 
     protected Player(String name) {
         this.name = name;
         this.fund = 70000;
+        this.betStatus = true;
     }
 
+    public void  setBetStatus(boolean status ) {
+        this.betStatus = status ;
+    }
+
+    public boolean getBetStatus() {
+        return this.betStatus ;
+    }
     public void setName(String name) {
         this.name = name;
     }

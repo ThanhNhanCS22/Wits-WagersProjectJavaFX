@@ -171,6 +171,12 @@ public class Game {
         return this.players.get(idx) ;
     }
 
+    public long getAnswer(int questionIdx) {
+        return answers.get(questionIdx) ;
+
+
+    }
+
     // Display the slots
     public void displaySlots() {
         System.out.println("\nSlots:");
@@ -259,6 +265,43 @@ public class Game {
     }
 
     // Determine the winning guess based on the correct answer
+
+    public Long getWinGuess (long correctAnswer) {
+        Long winningGuess = null ;
+        for (Long guess : sortedUniqueGuesses) {
+            if (guess <= correctAnswer) {
+                winningGuess = guess;
+            } else {
+                break;
+            }
+        }
+        return winningGuess;
+    }
+
+    public int getWinSlot(Long winningGuess) {
+
+        int winningSlot = -1;
+        if (winningGuess == null) {
+
+            winningSlot = 0;
+        } else {
+            for (int i = 0; i < slots.length; i++) {
+                if (slots[i] != null && slots[i].equals(winningGuess)) {
+                    winningSlot = i;
+                    break;
+                }
+            }
+
+
+        }
+
+        return winningSlot;
+    }
+
+    public boolean isWinSlot (int slot ,int winningSlot  ){
+        if(slot == winningSlot) return true ;
+        return false ;
+    }
     public void determineWinners(int correctAnswer) {
         System.out.println("\nThe correct answer is: " + correctAnswer);
 
