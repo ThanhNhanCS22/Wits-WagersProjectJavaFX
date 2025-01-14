@@ -23,19 +23,15 @@ import java.util.*;
 public class GUI extends Application {
     private boolean isGotBack = false;
 
-    // Main menu layout
+
     private StackPane mainMenuPane = new StackPane();
 
     // Scene
     private Scene mainMenuScene = new Scene(mainMenuPane);
 
-    // Backend Game instance
+
     private Game game = new Game();
 
-    // Background image
-//    private ImageView backgroundImage = new ImageView();
-
-    // Buttons
     private Button nextButton = new Button("Next");
 
     private Button backButton = new Button("Back");
@@ -514,14 +510,17 @@ public class GUI extends Application {
            nextButton.setOnAction(e2 -> {
                String currentGuessString = answerField.getText().trim();
 
+
                // Check if the input is empty
                if (currentGuessString.isEmpty()) {
                    notificationLabel.setText("Your guess cannot be empty. Please try again!");
 
                } else {
+
                    countdown.stop();
                    long guess = Long.parseLong(currentGuessString); // Parse the input as a number
                    game.addGuess(guess);
+                   game.getPlayer(playerCount - 1).setGuess(guess ) ;
 
                    if (playerCount < numPlayers) {
                        playerCount++;
@@ -549,34 +548,7 @@ public class GUI extends Application {
 
                     if (currentSecond >1) {
                         countdownLabel.setText(String.valueOf(--currentSecond ));
-//                        nextButton.setOnAction(e2 -> {
-//                            String currentGuessString = answerField.getText().trim();
 //
-//                            // Check if the input is empty
-//                            if (currentGuessString.isEmpty()) {
-//                                notificationLabel.setText("Your guess cannot be empty. Please try again!");
-//
-//                            }
-//
-//                            else {
-//                                countdown.stop() ;
-//                                long guess = Long.parseLong(currentGuessString); // Parse the input as a number
-//                                game.addGuess(guess);
-//
-//                                if (playerCount < numPlayers) {
-//                                    playerCount++;
-//                                    currentSecond  = 20 ;
-//                                    showQuestionScreen(stage); // Move to the next player's turn
-//                                } else {
-//                                    playerCount = 1 ;
-//                                    game.sortGuesses();
-//                                    game.placeGuessesInSlots();
-//                                    currentSecond = 30 ;
-//                                    showTurnScreen(stage); // Proceed to the next screen
-//
-//                                }
-//                            }
-//                        });
                     } else {
 
                         countdownLabel.setText("0");
@@ -585,6 +557,7 @@ public class GUI extends Application {
                                 new KeyFrame(Duration.seconds(1), event -> {
                                     if(guessString.isEmpty()){
                                         game.addGuess(0);
+                                        game.getPlayer(playerCount -1 ).setGuess(0);
                                     }
                                     else {
                                         long guess = Long.parseLong(guessString);
@@ -1085,15 +1058,10 @@ public class GUI extends Application {
                         Player player = game.getPlayer(playerCount - 1 ) ;
                         if (!player.getBetStatus()  ) {
 
-
-                            player.setFund(player.getFund() - player.getBetAmounts());
-
-
-
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
                                                                         + " loses 0$") ;
 
-                            playerCount++;
+
 
                         }
                         else if(!game.isWinSlot(player.getBetIdx(), game.getWinSlot(winGuess))) {
@@ -1102,24 +1070,31 @@ public class GUI extends Application {
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
                                     + " loses " + player.getBetAmounts() + "$") ;
 
-                            playerCount++;
+
                         }
                         else{
 
 
                             int bonus = game.calculateBonus(game.getWinSlot(winGuess), player.getBetAmounts());
                             player.setFund(player.getFund() + bonus);
+
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
                                                                                 + " wins "+ bonus + "$") ;
-                            playerCount++ ;
+
                         }
+
+                        if(game.getPlayer(playerCount-1  ).getGuess() == correctAnswer  ) {
+                            bonusLabelList.get(playerCount-1   ).setText(bonusLabelList.get(playerCount -1   ).getText() + " and gets 5000$ for a correct guess");
+                            player.setFund(player.getFund() + 5000);
+                        }
+                        playerCount++ ;
 
                     } else {
 
                         countdown.stop();
 
                         Timeline delay = new Timeline(
-                                new KeyFrame(Duration.seconds(1), event -> {
+                                new KeyFrame(Duration.seconds(2), event -> {
                                     if(questionCount  < 7)  {
                                         playerCount =1 ;
                                         questionCount ++;
@@ -1210,7 +1185,7 @@ public class GUI extends Application {
                         Timeline delay = new Timeline(
                                 new KeyFrame(Duration.seconds(2), event -> {
 
-                                    start(stage ) ;
+                                    showThankYouScreen(stage );
 
                                 })
                         );
@@ -1225,6 +1200,20 @@ public class GUI extends Application {
         countdown.play() ;
 
 
+    }
+
+    private void showThankYouScreen(Stage stage ){
+        mainMenuPane.getChildren().clear() ;
+        waitingScreenLabel.setText( "Thank You!" ) ;
+
+        pause.setDuration(Duration.seconds(2));
+        pause.setOnFinished(event -> {
+            start(stage);
+
+        });
+
+        mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
+        pause.play();
     }
     public static void main(String[] args) {
         launch(args);

@@ -7,11 +7,19 @@ public class Player {
     private int betIdx;
     private int betAmounts;
     private boolean betStatus;
+    private long guess ;
 
     protected Player(String name) {
         this.name = name;
         this.fund = 70000;
         this.betStatus = true;
+    }
+
+    public void setGuess(long guess ) {
+        this.guess = guess ;
+    }
+    public long getGuess() {
+        return this.guess ;
     }
 
     public void  setBetStatus(boolean status ) {
