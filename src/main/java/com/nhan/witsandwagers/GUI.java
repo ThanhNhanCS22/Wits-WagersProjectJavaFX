@@ -101,17 +101,10 @@ public class GUI extends Application {
 
     private int winnersCount  = 0 ;
 
+    private void initialize(Stage stage ) {
 
-    @Override
-    public void start(Stage primaryStage) {
-        mainMenuPane.getChildren().clear();
-        vButtonBox.getChildren().clear();
-        vButtonBox.setSpacing(40);
         mainMenuPane.setPrefSize(1920, 1080);
         mainMenuPane.setStyle("-fx-background-color: #069f4a;");
-
-        paused= false ;
-
         playGameButton.setText("Play Game") ;
 
         questionTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ff8800;" +
@@ -262,8 +255,8 @@ public class GUI extends Application {
 
         playGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
         exitGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
-        playGameButton.setOnAction(e -> showPlayerSelectionScreen(primaryStage));
-        exitGameButton.setOnAction(e -> primaryStage.close());
+        playGameButton.setOnAction(e -> showPlayerSelectionScreen(stage));
+        exitGameButton.setOnAction(e -> stage.close());
 
         nextButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.07));
         nextButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
@@ -280,10 +273,23 @@ public class GUI extends Application {
         exitGameButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
 
         // Add components to the main menu pane
+    }
+
+
+    @Override
+    public void start(Stage primaryStage) {
+        mainMenuPane.getChildren().clear();
+        vButtonBox.getChildren().clear();
+        vButtonBox.setSpacing(40);
+
+
+
+        paused= false ;
 
         mainMenuPane.getChildren().addAll( mainTitle, vButtonBox);
 
         if (!isGotBack) {
+            initialize(primaryStage);
             game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/questions.txt");
             game.selectUniqueQuestions();
             primaryStage.setScene(mainMenuScene);
@@ -1208,6 +1214,7 @@ public class GUI extends Application {
 
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
+            isGotBack = false ;
             start(stage);
 
         });
