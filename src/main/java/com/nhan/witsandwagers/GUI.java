@@ -101,11 +101,15 @@ public class GUI extends Application {
 
     private int winnersCount  = 0 ;
 
+    private boolean gameStarted = false ;
+
     private void initialize(Stage stage ) {
+
+
 
         mainMenuPane.setPrefSize(1920, 1080);
         mainMenuPane.setStyle("-fx-background-color: #069f4a;");
-        playGameButton.setText("Play Game") ;
+
 
         questionTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ff8800;" +
                 " -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
@@ -240,7 +244,7 @@ public class GUI extends Application {
         StackPane.setMargin(note, new Insets(0, 0, 50, 0));
 
 
-        vButtonBox.getChildren().addAll(playGameButton, exitGameButton);
+
         vButtonBox.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
         StackPane.setAlignment(vButtonBox, Pos.CENTER);
 
@@ -255,8 +259,7 @@ public class GUI extends Application {
 
         playGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
         exitGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
-        playGameButton.setOnAction(e -> showPlayerSelectionScreen(stage));
-        exitGameButton.setOnAction(e -> stage.close());
+
 
         nextButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.07));
         nextButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
@@ -282,16 +285,25 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear();
         vButtonBox.setSpacing(40);
 
-
+        playGameButton.setText("Play Game") ;
+        playGameButton.setOnAction(e -> showPlayerSelectionScreen(primaryStage));
+        exitGameButton.setOnAction(e -> primaryStage.close());
 
         paused= false ;
 
-        mainMenuPane.getChildren().addAll( mainTitle, vButtonBox);
+        vButtonBox.getChildren().addAll(playGameButton, exitGameButton);
 
-        if (!isGotBack) {
-            initialize(primaryStage);
+        mainMenuPane.getChildren().addAll( mainTitle, vButtonBox);
+        if(!isGotBack){
             game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/questions.txt");
             game.selectUniqueQuestions();
+
+        }
+
+        if (!gameStarted) {
+            gameStarted = true ;
+            initialize(primaryStage);
+
             primaryStage.setScene(mainMenuScene);
             primaryStage.setTitle("Wits and Wagers");
             primaryStage.show();
@@ -412,7 +424,7 @@ public class GUI extends Application {
 
 
         playGameButton.setText("Play") ;
-        playGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
         playGameButton.setOnAction(e -> showCountdownScreen( stage));
 
 
@@ -480,7 +492,7 @@ public class GUI extends Application {
 
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
-            currentSecond = 20;
+            currentSecond = 30;
             showGuessScreen(stage);
 
         });
@@ -530,7 +542,7 @@ public class GUI extends Application {
 
                    if (playerCount < numPlayers) {
                        playerCount++;
-                       currentSecond = 20;
+                       currentSecond = 30;
                        showGuessScreen(stage); // Move to the next player's turn
                    } else {
                        playerCount = 1;
@@ -573,7 +585,7 @@ public class GUI extends Application {
 
                                     if(playerCount < numPlayers) {
                                         playerCount++;
-                                        currentSecond = 20 ;
+                                        currentSecond = 30 ;
                                         showGuessScreen(stage);
                                     }
                                     else {
@@ -615,7 +627,7 @@ public class GUI extends Application {
         vButtonBox.getChildren().addAll(requestPlayerLabel, answerField, nextButton,notificationLabel);
         mainMenuPane.getChildren().addAll(questionNumTitleOfShowGuessScreen, questionTitle,countdownLabel, note, vButtonBox,pauseButton);
 
-        countdown.setCycleCount(20);
+        countdown.setCycleCount(30);
         countdown.play();
     }
 
@@ -1215,6 +1227,7 @@ public class GUI extends Application {
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
             isGotBack = false ;
+            game.clearGame() ;
             start(stage);
 
         });
