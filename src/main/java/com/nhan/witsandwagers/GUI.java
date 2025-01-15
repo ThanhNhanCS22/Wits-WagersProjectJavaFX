@@ -1122,6 +1122,7 @@ public class GUI extends Application {
                                     else{
 
                                         showResultScreen(stage ) ;
+
                                     }
 
 

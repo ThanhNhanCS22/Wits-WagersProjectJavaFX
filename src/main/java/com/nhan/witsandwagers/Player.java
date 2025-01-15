@@ -44,6 +44,8 @@ public class Player {
     }
 
 
+
+
     public void setBetIdx(int betIdx) {
         this.betIdx = betIdx;
     }
