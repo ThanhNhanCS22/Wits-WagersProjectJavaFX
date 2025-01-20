@@ -1,0 +1,13 @@
+What is the height of Eiffel Tower ?_330_2
+How many continents are there ?_7_1
+How many times did Germany win the FIFA World Cup ?_4_1
+What is the population of Frankfurt in 2024 ?_801000_2
+How many countries have hosted the FIFA World Cup ?_18_2
+What is the height of Mount Everest in metres ?_8849_2
+What is the population of Germany in 2024 ?_84552242_3
+The answer is a 2-digit number, guess what is it ?_88_3
+
+
+
+   
+

@@ -1,4 +1,4 @@
-package com.nhan.witsandwagers;
+package com.nhan.witsandwagers.Elements;
 
 public class Player {
     private String name;
@@ -9,7 +9,7 @@ public class Player {
     private boolean betStatus;
     private long guess ;
 
-    protected Player(String name) {
+    public Player(String name) {
         this.name = name;
         this.fund = 70000;
         this.betStatus = true;

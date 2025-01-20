@@ -1,5 +1,7 @@
-package com.nhan.witsandwagers;
+package com.nhan.witsandwagers.Gui;
 
+import com.nhan.witsandwagers.Elements.Player;
+import com.nhan.witsandwagers.Logic.Game;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,12 +25,9 @@ import java.util.*;
 public class GUI extends Application {
     private boolean isGotBack = false;
 
-
     private StackPane mainMenuPane = new StackPane();
 
-    // Scene
     private Scene mainMenuScene = new Scene(mainMenuPane);
-
 
     private Game game = new Game();
 
@@ -38,18 +37,18 @@ public class GUI extends Application {
     //Box
     private VBox vButtonBox = new VBox();
 
-
     private HBox hButtonBox = new HBox() ; // To arrange buttons horizontally
 
     private Label questionNumTitleOfShowGuessScreen = new Label( ) ;
 
-
-
     private Label questionTitle = new Label() ;
+
     private VBox vTitleBox =new VBox() ;
+
     private Label requestPlayerLabel = new Label() ;
 
     private Label inputNameLabel = new Label();
+
     private TextField nameField = new TextField();
 
     private TextField answerField = new TextField() ;
@@ -67,18 +66,21 @@ public class GUI extends Application {
     private Label mainTitle = new Label("WITS & WAGERS");
 
     private Label winnersTitle = new Label("WINNER(S)") ;
+
     private int questionCount ;
+
     private int playerCount ;
 
     private Label countdownLabel = new Label();
 
     private Label betCountDownLabel = new Label();
-    // Declare and initialize the Timeline
+
     private Timeline countdown = new Timeline();
 
     private Label note = new Label() ;
 
     private int currentSecond ;
+
     private Boolean paused  ;
 
     private Label waitingScreenLabel = new Label() ;
@@ -189,7 +191,7 @@ public class GUI extends Application {
 
 
 
-        ImageView pauseIcon = new ImageView(new Image("file:/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/pause.png")); // Use the uploaded image path
+        ImageView pauseIcon = new ImageView(new Image("file:/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/images/pause.png")); // Use the uploaded image path
         pauseIcon.setFitWidth(150); // Set the size of the icon
         pauseIcon.setFitHeight(150);
         pauseButton.setGraphic(pauseIcon);
@@ -295,8 +297,7 @@ public class GUI extends Application {
 
         mainMenuPane.getChildren().addAll( mainTitle, vButtonBox);
         if(!isGotBack){
-            game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/questions.txt");
-            game.selectUniqueQuestions();
+            game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/Elements/questions.txt");
 
         }
 
@@ -517,8 +518,8 @@ public class GUI extends Application {
         paused = false ;
 
         questionNumTitleOfShowGuessScreen.setText("Question " + questionCount );
-        questionTitle.setText(game.getQuestion(questionCount - 1));
-        requestPlayerLabel.setText(game.getPlayerName(playerCount - 1) + ", let's try guessing a number!");
+        questionTitle.setText(game.getQuestionElement(questionCount - 1).getQuestion());
+        requestPlayerLabel.setText(game.getPlayer(playerCount - 1).getName ()  + ", let's try guessing a number!");
 //        backgroundImage.setImage(new Image("file:question_bg.jpg"));
 
         countdownLabel.setText(Integer.toString(currentSecond) );
@@ -637,7 +638,7 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear() ;
         vButtonBox.setSpacing(10);
 
-        playerNameLabel.setText(game.getPlayerName(playerCount -1  ) ) ;
+        playerNameLabel.setText(game.getPlayer(playerCount -1  ).getName() ) ;
 
 
         waitingScreenLabel.setText( "Now is your betting turn!" ) ;
@@ -1049,7 +1050,7 @@ public class GUI extends Application {
         int timeToShowAnswer = currentSecond -1 ;
         int timeToShowWinningGuess = currentSecond - 2 ;
 
-        long correctAnswer = game.getAnswer(questionCount -1 );
+        long correctAnswer = game.getQuestionElement(questionCount -1 ).getAnswer();
         Long winGuess = game.getWinGuess(correctAnswer );
 
 
@@ -1076,7 +1077,7 @@ public class GUI extends Application {
                         Player player = game.getPlayer(playerCount - 1 ) ;
                         if (!player.getBetStatus()  ) {
 
-                            bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
+                            bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayer(playerCount - 1 ).getName()
                                                                         + " loses 0$") ;
 
 
@@ -1085,7 +1086,7 @@ public class GUI extends Application {
                         else if(!game.isWinSlot(player.getBetIdx(), game.getWinSlot(winGuess))) {
                             player.setFund(player.getFund() - player.getBetAmounts());
 
-                            bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
+                            bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayer(playerCount - 1 ).getName()
                                     + " loses " + player.getBetAmounts() + "$") ;
 
 
@@ -1096,7 +1097,7 @@ public class GUI extends Application {
                             int bonus = game.calculateBonus(game.getWinSlot(winGuess), player.getBetAmounts());
                             player.setFund(player.getFund() + bonus);
 
-                            bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayerName(playerCount - 1 )
+                            bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayer(playerCount - 1 ).getName()
                                                                                 + " wins "+ bonus + "$") ;
 
                         }

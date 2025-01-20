@@ -1,4 +1,8 @@
-package com.nhan.witsandwagers;
+package com.nhan.witsandwagers.Logic;
+
+import com.nhan.witsandwagers.Elements.Player;
+import com.nhan.witsandwagers.Elements.Question;
+
 import java.io.*;
 import java.util.*;
 
@@ -9,61 +13,83 @@ public class Game {
     private List<Long> sortedUniqueGuesses = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
     private Long[] slots = new Long[8];
-    private List<String> questions = new ArrayList<>();
-    private List<Integer> answers = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
+    private List<Question> selectedQuestions = new ArrayList<>();
+
     private List<Integer> usedQuestionIndices = new ArrayList<>();
     private List<String> playerNames = new ArrayList<>();
 
     // Load questions from a file
     public void loadQuestions(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("_");
-                if (parts.length == 2) {
-                    questions.add(parts[0]);
-                    answers.add(Integer.parseInt(parts[1]));
+        if (questions.size() < 20 ) {
+            try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+                String line;
+                while ((line = br.readLine()) != null) {
+
+                    String[] parts = line.split("_");
+                    if (parts.length == 3) {
+                        questions.add(new Question(parts[0], Long.parseLong(parts[1]), Integer.parseInt(parts[2])));
+
+                    }
+                }
+
+
+            } catch (IOException e) {
+                System.err.println("Error reading the questions file: " + e.getMessage());
+                System.exit(1);
+            }
+        }
+        selectedQuestions = weightedRandomSampling() ;
+    }
+
+    public  List<Question> weightedRandomSampling() {
+        List<Question> selectedQuestions = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < 7; i++) {
+            int totalWeight = questions.stream().mapToInt(q -> q.getWeight()).sum();
+            int randomValue = random.nextInt(totalWeight);
+            int cumulativeWeight = 0;
+
+            for (Question q : questions) {
+                cumulativeWeight += q.getWeight();
+                if (randomValue < cumulativeWeight) {
+                    selectedQuestions.add(q);
+                    questions.remove(q);
+                    break;
                 }
             }
-        } catch (IOException e) {
-            System.err.println("Error reading the questions file: " + e.getMessage());
-            System.exit(1);
-        }
-    }
-
-    public void selectUniqueQuestions() {
-        Random random = new Random();
-        usedQuestionIndices.clear(); // Clear previously used indices to avoid conflicts in multiple games
-
-        while (usedQuestionIndices.size() <= 7) {
-            int index = random.nextInt(questions.size());
-            if (!usedQuestionIndices.contains(index))
-                usedQuestionIndices.add(index);
 
         }
+        return selectedQuestions;
 
-        List<String> selectedQuestions = new ArrayList<>();
-        List<Integer> selectedAnswers = new ArrayList<>();
-
-        for (int index : usedQuestionIndices) {
-            selectedQuestions.add(questions.get(index));
-            selectedAnswers.add(answers.get(index));
-        }
-
-        this.questions = selectedQuestions;
-        this.answers = selectedAnswers;
     }
+//    public void selectUniqueQuestions() {
+//        Random random = new Random();
+//        usedQuestionIndices.clear(); // Clear previously used indices to avoid conflicts in multiple games
+//
+//        while (usedQuestionIndices.size() <= 7) {
+//            int index = random.nextInt(questions.size());
+//            if (!usedQuestionIndices.contains(index))
+//                usedQuestionIndices.add(index);
+//
+//        }
+//
+//        List<String> selectedQuestions = new ArrayList<>();
+//        List<Long> selectedAnswers = new ArrayList<>();
+//
+//        for (int index : usedQuestionIndices) {
+//            selectedQuestions.add(questions.get(index));
+//            selectedAnswers.add(answers.get(index));
+//        }
+//
+//        this.questions = selectedQuestions;
+//        this.answers = selectedAnswers;
+//    }
 
-    public String getQuestion(int index) {
-        return this.questions.get(index) ;
-    }
-
-    public String getPlayerName(int index ){
-        return this.players.get(index).getName() ;
-    }
-
-    public void setPlayerBetAmount(int idx, int amount ) {
-        this.players.get(idx).setBetAmounts(amount);
+    public Question getQuestionElement(int index) {
+           return this.questions.get(index ) ;
     }
 
 
@@ -87,10 +113,10 @@ public class Game {
     }
 
     public void clearGame() {
-        questions.clear() ;
+        selectedQuestions.clear() ;
         players.clear() ;
         playerNames.clear() ;
-        answers.clear() ;
+
         usedQuestionIndices.clear() ;
         uniqueGuesses.clear();
         slots.clone() ;
@@ -134,7 +160,7 @@ public class Game {
 
     // Ask a question and get guesses from players
     public void askQuestion(int questionNumber) {
-        System.out.println("\nQuestion " + questionNumber + ": " + questions.get(questionNumber - 1) + "\n");
+        System.out.println("\nQuestion " + questionNumber + ": " + selectedQuestions.get(questionNumber - 1) + "\n");
 
         uniqueGuesses.clear();
 
@@ -173,11 +199,7 @@ public class Game {
         return this.players.get(idx) ;
     }
 
-    public long getAnswer(int questionIdx) {
-        return answers.get(questionIdx) ;
 
-
-    }
 
     // Display the slots
     public void displaySlots() {
