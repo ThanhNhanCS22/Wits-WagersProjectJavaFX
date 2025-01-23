@@ -1,11 +1,9 @@
 package com.nhan.witsandwagers.Elements;
 
 public class Question {
-    private String question ;
-    private long answer ;
-    private int weight ;
-
-
+    private final String question ;
+    private final long answer ;
+    private final int weight ;
 
 
     public Question(String question, long answer, int weight ) {

@@ -3,25 +3,28 @@ package com.nhan.witsandwagers.Logic;
 import com.nhan.witsandwagers.Elements.Player;
 import com.nhan.witsandwagers.Elements.Question;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 // Represents the main game logic
 public class Game {
-    private List<Player> players = new ArrayList<>();
-    private Set<Long> uniqueGuesses = new TreeSet<>();
+    private final List<Player> players = new ArrayList<>();
+    private final Set<Long> uniqueGuesses = new TreeSet<>();
     private List<Long> sortedUniqueGuesses = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
-    private Long[] slots = new Long[8];
-    private List<Question> questions = new ArrayList<>();
+    private final Scanner scanner = new Scanner(System.in);
+    private final Long[] slots = new Long[8];
+    private final List<Question> questions = new ArrayList<>();
     private List<Question> selectedQuestions = new ArrayList<>();
 
-    private List<Integer> usedQuestionIndices = new ArrayList<>();
-    private List<String> playerNames = new ArrayList<>();
+    private final List<Integer> usedQuestionIndices = new ArrayList<>();
+    private final List<String> playerNames = new ArrayList<>();
 
     // Load questions from a file
     public void loadQuestions(String fileName) {
-        if (questions.size() < 20 ) {
+        if (questions.size() < 7) {
+            questions.clear();
             try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
                 String line;
@@ -33,8 +36,6 @@ public class Game {
 
                     }
                 }
-
-
             } catch (IOException e) {
                 System.err.println("Error reading the questions file: " + e.getMessage());
                 System.exit(1);
@@ -67,7 +68,7 @@ public class Game {
     }
 //    public void selectUniqueQuestions() {
 //        Random random = new Random();
-//        usedQuestionIndices.clear(); // Clear previously used indices to avoid conflicts in multiple games
+//        usedQuestionIndices.clear();
 //
 //        while (usedQuestionIndices.size() <= 7) {
 //            int index = random.nextInt(questions.size());
@@ -89,7 +90,7 @@ public class Game {
 //    }
 
     public Question getQuestionElement(int index) {
-           return this.questions.get(index ) ;
+        return this.selectedQuestions.get(index);
     }
 
 
@@ -102,10 +103,14 @@ public class Game {
         return false ;
 
     }
+
+
     public void addPlayer(String name){
         players.add(new Player(name))  ;
 
     }
+
+
     public void removePlayer(){
 
         players.remove(players.size() - 1);
@@ -116,7 +121,6 @@ public class Game {
         selectedQuestions.clear() ;
         players.clear() ;
         playerNames.clear() ;
-
         usedQuestionIndices.clear() ;
         uniqueGuesses.clear();
         slots.clone() ;
@@ -315,16 +319,13 @@ public class Game {
                     break;
                 }
             }
-
-
         }
 
         return winningSlot;
     }
 
     public boolean isWinSlot (int slot ,int winningSlot  ){
-        if(slot == winningSlot) return true ;
-        return false ;
+        return slot == winningSlot;
     }
     public void determineWinners(int correctAnswer) {
         System.out.println("\nThe correct answer is: " + correctAnswer);
