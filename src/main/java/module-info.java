@@ -3,6 +3,7 @@ module com.nhan.witsandwagers {
     requires javafx.fxml;
 
 //    opens com.nhan.witsandwagers to javafx.fxml;
+    exports com.nhan.witsandwagers;
 
     exports com.nhan.witsandwagers.Elements;
 //    opens com.nhan.witsandwagers.Elements to javafx.fxml;

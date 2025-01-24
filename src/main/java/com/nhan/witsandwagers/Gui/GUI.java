@@ -23,7 +23,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
-//import com.nhan.witsandwagers ;
+
 
 
 
@@ -89,7 +89,7 @@ public class GUI extends Application {
 
     private int currentSecond ;
 
-    private Boolean paused  ;
+    private Boolean paused = false;
 
     private final Label waitingScreenLabel = new Label() ;
 
@@ -116,6 +116,7 @@ public class GUI extends Application {
     private void initialize(Stage stage ) {
 
         mainMenuPane.setPrefSize(1920, 1080);
+
         mainMenuPane.setStyle("-fx-background-color: #069f4a;");
 
 
@@ -191,12 +192,7 @@ public class GUI extends Application {
         });
 
         answerField.setAlignment(Pos.CENTER);
-
-
         notificationLabel.setStyle("-fx-font-size: 25px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
-
-
-
         ImageView pauseIcon = new ImageView(new Image("file:/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/images/pause.png")); // Use the uploaded image path
         pauseIcon.setFitWidth(150); // Set the size of the icon
         pauseIcon.setFitHeight(150);
@@ -293,33 +289,30 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear();
         vButtonBox.setSpacing(40);
 
-        playGameButton.setText("Play Game") ;
-        playGameButton.setOnAction(e ->
-        {
+        playGameButton.setText("Play Game");
+        playGameButton.setOnAction(e -> {
             GotBack = true;
             showPlayerSelectionScreen(primaryStage);
         });
         exitGameButton.setOnAction(e -> primaryStage.close());
 
-        paused= false ;
-
         vButtonBox.getChildren().addAll(playGameButton, exitGameButton);
+        mainMenuPane.getChildren().addAll(mainTitle, vButtonBox);
 
-        mainMenuPane.getChildren().addAll( mainTitle, vButtonBox);
         if (!GotBack) {
             game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/Elements/questions.txt");
-
         }
 
         if (!gameStarted) {
-            gameStarted = true ;
+            gameStarted = true;
             initialize(primaryStage);
+
+            primaryStage.setResizable(false); // Ngăn cửa sổ thay đổi kích thước
             primaryStage.setScene(mainMenuScene);
             primaryStage.setTitle("Wits and Wagers");
             primaryStage.show();
         }
     }
-
 
     private void showPlayerSelectionScreen( Stage stage) {
 
@@ -358,7 +351,6 @@ public class GUI extends Application {
         mainMenuPane.getChildren().addAll( vButtonBox);
 
     }
-
     private void inputPlayersNameScreen(Stage stage) {
         // Clear the current children of the main pane
         mainMenuPane.getChildren().clear();
@@ -418,7 +410,6 @@ public class GUI extends Application {
         localVBox.getChildren().addAll(inputNameLabel,vButtonBox) ;
         mainMenuPane.getChildren().addAll( mainTitle ,localVBox);
     }
-
     private void showReadyToPlayScreen(Stage stage )  {
         mainMenuPane.getChildren().clear();
         vButtonBox.getChildren().clear() ;
@@ -445,8 +436,6 @@ public class GUI extends Application {
         vButtonBox.getChildren().addAll(readyLabel, playGameButton, backButton);
         mainMenuPane.getChildren().addAll( vButtonBox);
     }
-
-
     private void showCountdownScreen( Stage stage) {
         mainMenuPane.getChildren().clear();
         countdown.getKeyFrames().clear();
@@ -487,7 +476,6 @@ public class GUI extends Application {
         countdown.setCycleCount(3);
         countdown.play();
     }
-
     private void showQuestionScreen(Stage stage ){
 
         mainMenuPane.getChildren().clear() ;
@@ -626,7 +614,6 @@ public class GUI extends Application {
 
 
     }
-
     private void showTurnScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear() ;
@@ -653,9 +640,6 @@ public class GUI extends Application {
 
 
     }
-
-
-
     private void showPauseScreen(Stage stage, int chooseScreen) {
         mainMenuPane. getChildren().clear() ;
         vButtonBox.getChildren().clear() ;
@@ -673,6 +657,7 @@ public class GUI extends Application {
 
         homeButton.setOnAction(e ->{
             playerCount =1 ;
+            paused = false;
             GotBack = false;
             game.clearGame() ;
             start(stage);
@@ -867,7 +852,6 @@ public class GUI extends Application {
         }
 
     }
-
     private void showBetScreen(Stage stage) {
 
 
@@ -957,8 +941,6 @@ public class GUI extends Application {
 
         vButtonBox.getChildren().addAll( chosenSLotLabel, playerBalanceLabel,hButtonBox, backButton);
     }
-
-
     private void showBonusSummaryScreen(Stage stage) {
         mainMenuPane.getChildren().clear();
 
@@ -969,15 +951,11 @@ public class GUI extends Application {
         pause.setOnFinished(event -> {
             currentSecond = 4 + numPlayers ;
             showBonusDetailScreen( stage );
-
-
         });
 
 
         mainMenuPane.getChildren().addAll(bonusLabel) ;
         pause.play();
-
-
 
     }
     private void showBonusDetailScreen(Stage stage ) {
@@ -1111,7 +1089,6 @@ public class GUI extends Application {
         mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
         pause.play();
     }
-
     private void showResultDetailScreen(Stage stage){
 
         mainMenuPane.getChildren().clear() ;
@@ -1171,7 +1148,6 @@ public class GUI extends Application {
 
 
     }
-
     private void showThankYouScreen(Stage stage ){
         mainMenuPane.getChildren().clear() ;
         waitingScreenLabel.setText( "Thank You!" ) ;
