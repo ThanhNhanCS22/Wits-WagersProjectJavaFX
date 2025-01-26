@@ -29,9 +29,10 @@ import java.util.List;
 
 public class GUI extends Application {
 
+
     private boolean betScreenisShowed = false;
 
-    private boolean GotBack = false;
+    private final Button gameRuleButton = new Button("How To Play");
 
     private final StackPane mainMenuPane = new StackPane();
 
@@ -70,6 +71,7 @@ public class GUI extends Application {
     private final Button playGameButton = new Button();
 
     private final Button exitGameButton = new Button("Exit Game");
+    private final Label readyLabel = new Label("Are you ready?");
 
     private final Label mainTitle = new Label("WITS & WAGERS");
 
@@ -104,6 +106,7 @@ public class GUI extends Application {
     private final Label correctAnswerLabel = new Label() ;
 
     private final Label winningGuessLabel = new Label() ;
+    private final Label stepLabel = new Label();
 
     private String[] buttonSlotLabels ;
 
@@ -112,6 +115,10 @@ public class GUI extends Application {
     private int winnersCount  = 0 ;
 
     private boolean gameStarted = false ;
+    private final Label contentLabel = new Label();
+    Button homeButton = new Button("Home");
+    private boolean gotBack = false;
+    private int countStep = 0;
 
     private void initialize(Stage stage ) {
 
@@ -192,7 +199,7 @@ public class GUI extends Application {
         });
 
         answerField.setAlignment(Pos.CENTER);
-        notificationLabel.setStyle("-fx-font-size: 25px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
+        notificationLabel.setStyle("-fx-font-size: 35px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
         ImageView pauseIcon = new ImageView(new Image("file:/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/images/pause.png")); // Use the uploaded image path
         pauseIcon.setFitWidth(150); // Set the size of the icon
         pauseIcon.setFitHeight(150);
@@ -205,8 +212,6 @@ public class GUI extends Application {
         StackPane.setMargin(pauseButton, new Insets(30, 0, 0, 30)); // Add margin for spacing
 
 
-
-
         mainTitle.setStyle(
                 "-fx-text-fill: white;" +
                         "-fx-font-size: 88px;" + // Font size
@@ -214,7 +219,27 @@ public class GUI extends Application {
                         "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
                         "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
         );
-//        mainTitle.setAlignment(Pos.CENTER); // Center-align the title text
+//
+        readyLabel.setStyle(
+                "-fx-text-fill: white;" +
+                        "-fx-font-size: 80px;" + // Font size
+                        "-fx-font-family: 'Comic Sans MS';" + // Font family
+                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
+                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
+        );
+
+        stepLabel.setStyle(
+                "-fx-text-fill: yellow;" +
+                        "-fx-font-size: 65px;" + // Font size
+                        "-fx-font-family: 'Comic Sans MS';" + // Font family
+                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
+                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
+        );
+
+
+        contentLabel.setWrapText(true);
+        contentLabel.setMaxWidth(1200);
+
 
 
         // Position the title at the top and center
@@ -263,23 +288,38 @@ public class GUI extends Application {
 
         playGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
         exitGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        gameRuleButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
-
-        nextButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.07));
+        nextButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.1));
         nextButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
-        nextButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        nextButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        StackPane.setAlignment(nextButton, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(nextButton, new Insets(0, 100, 80, 0));
 
-        backButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.07));
+        backButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.1));
         backButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
-        backButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        backButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        StackPane.setAlignment(backButton, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(backButton, new Insets(0, 0, 80, 100));
 
         // Bind button sizes to window size
         playGameButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
         playGameButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
         exitGameButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.14));
         exitGameButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
+        gameRuleButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
+        gameRuleButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
 
-        // Add components to the main menu pane
+
+        homeButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
+        homeButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
+
+        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        StackPane.setAlignment(homeButton, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(homeButton, new Insets(0, 100, 80, 0));
+
+
+
     }
 
 
@@ -291,15 +331,26 @@ public class GUI extends Application {
 
         playGameButton.setText("Play Game");
         playGameButton.setOnAction(e -> {
-            GotBack = true;
+
             showPlayerSelectionScreen(primaryStage);
         });
         exitGameButton.setOnAction(e -> primaryStage.close());
 
-        vButtonBox.getChildren().addAll(playGameButton, exitGameButton);
+        gameRuleButton.setOnAction(e -> {
+            mainMenuPane.getChildren().clear();
+            vButtonBox.getChildren().clear();
+            vButtonBox.getChildren().addAll(stepLabel, contentLabel);
+            mainMenuPane.getChildren().addAll(mainTitle, vButtonBox, backButton, nextButton);
+            showRuleScreen(primaryStage);
+
+        });
+
+
+        vButtonBox.getChildren().addAll(playGameButton, exitGameButton, gameRuleButton);
         mainMenuPane.getChildren().addAll(mainTitle, vButtonBox);
 
-        if (!GotBack) {
+        if (!gotBack) {
+            gotBack = true;
             game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/Elements/questions.txt");
         }
 
@@ -307,11 +358,234 @@ public class GUI extends Application {
             gameStarted = true;
             initialize(primaryStage);
 
-            primaryStage.setResizable(false); // Ngăn cửa sổ thay đổi kích thước
+            primaryStage.setResizable(false);
             primaryStage.setScene(mainMenuScene);
             primaryStage.setTitle("Wits and Wagers");
             primaryStage.show();
         }
+    }
+
+    private void showRuleScreen(Stage stage) {
+
+
+        if (countStep == 0) {
+            contentLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+            stepLabel.setText("Overview");
+            contentLabel.setText("Not a trivia buff? It doesn’t matter! Each player writes down a guess to the same " +
+                    "question and places it face-up on the betting mat. Think you know it? " +
+                    "Bet on your guess! Think you know who the expert is? Bet on them. The player with " +
+                    "the most points after 7 questions wins.");
+        } else if (countStep == 1) {
+            contentLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+            stepLabel.setText("When To Play");
+            contentLabel.setText("Wits & Wagers is most fun with groups of maximum 7 people. We recommend playing " +
+                    "at holiday parties, family reunions, or any large gathering of friends. " +
+                    "Be prepared for light-hearted banter, a little bravado, and a big dose of cheering!");
+        } else if (countStep == 2) {
+            contentLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+            stepLabel.setText("Step 1: Read & Answer The Questions");
+            contentLabel.setText("Each player will have 30 seconds to read, understand, and write down their answer (a guess) " +
+                    "displayed on the screen. Please note, answers must be whole numbers only. Don’t be afraid to make a guess, " +
+                    "because whether your answer is right or wrong doesn’t matter! The amount of money you earn or lose will depend " +
+                    "on your bets during the betting round.");
+
+
+        } else if (countStep == 3) {
+            hButtonBox.getChildren().clear();
+            stepLabel.setText("Step 2: Sort The Guesses");
+
+            String text = "The predictions from each player will be automatically arranged in increasing order on a betting mat, " +
+                    "from the smallest to the largest prediction, from left to right. If the total number of predictions is odd, " +
+                    "the middle prediction will go into the 'Pay2to1' slot. If the total number of predictions is even, the 'Pay2to1'" +
+                    " slot will stay empty. What about predictions that are the same? Don’t worry, just make your prediction because only" +
+                    " one of the same predictions will be kept.";
+
+
+            String part1 = text.substring(0, text.length() / 2);
+
+            String part2 = text.substring(text.length() / 2);
+
+
+            Label text1 = new Label(part1);
+            text1.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text1.setWrapText(true);
+            text1.setMaxWidth(580);
+
+            Label text2 = new Label(part2);
+            text2.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text2.setWrapText(true);
+            text2.setMaxWidth(580);
+
+            hButtonBox.setSpacing(50);
+
+            hButtonBox.getChildren().addAll(text1, text2);
+
+
+        } else if (countStep == 4) {
+            hButtonBox.getChildren().clear();
+            stepLabel.setText("Step 3: Bet");
+            String text = "Each player will start the game with $70,000. After the 'Read & Answer The Question' round, each player will have 30 seconds to " +
+                    "place a bet for once time per question. First, choose a slot to bet on (you can only bet on slots that have predictions in order). " +
+                    "You can place your bet on any slot you like, even if it's not the one with your own prediction. During the " +
+                    "30 seconds, you can change your bet as many times as you want. After that, you need to choose how much money (displayed on the screen) " +
+                    "you want to bet, then it's the next player's turn. If you decide not to bet, that's fine— you won't lose " +
+                    "anything, but you won't win anything either ^^. " +
+                    "Also, each player can see their total money and the slot they've chosen on the screen.";
+
+            String part1 = text.substring(0, text.length() / 3 + 12);
+
+            String part2 = text.substring(text.length() / 3 + 12, (text.length() / 3) * 2 + 8);
+
+            String part3 = text.substring((text.length() / 3) * 2 + 8);
+
+
+            Label text1 = new Label(part1);
+            text1.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 28px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text1.setWrapText(true);
+            text1.setMaxWidth(450);
+
+            Label text2 = new Label(part2);
+            text2.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 28px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text2.setWrapText(true);
+            text2.setMaxWidth(450);
+
+            Label text3 = new Label(part3);
+            text3.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 28px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text3.setWrapText(true);
+            text3.setMaxWidth(450);
+
+            hButtonBox.setSpacing(50);
+
+            hButtonBox.getChildren().addAll(text1, text2, text3);
+
+        } else if (countStep == 5) {
+            hButtonBox.getChildren().clear();
+
+            stepLabel.setText("Step 4: Determine The Wining Guess & Pay Bonus");
+            String text = "After all players finish placing their bets, the bonus screen will be shown. " +
+                    "If a player bets on a slot with a prediction that matches or is closest to the correct answer, " +
+                    "that player will get back the amount they bet and will also receive extra money. The extra money is " +
+                    "the amount they bet, multiplied by the number of slots (minus 1). For example, if a player bets $100 " +
+                    "on the Pay3to1 slot and that slot has the correct answer, they will win $300. Also, if a player " +
+                    "predicts the correct answer, they will get an additional $5000. Only one slot will win the prize," +
+                    " and if a player bets on the other slots, they will lose their bet.";
+
+            String part1 = text.substring(0, text.length() / 3 + 3);
+
+            String part2 = text.substring(text.length() / 3 + 3, (text.length() / 3) * 2);
+
+            String part3 = text.substring((text.length() / 3) * 2);
+
+
+            Label text1 = new Label(part1);
+            text1.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 28px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text1.setWrapText(true);
+            text1.setMaxWidth(420);
+
+            Label text2 = new Label(part2);
+            text2.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 28px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text2.setWrapText(true);
+            text2.setMaxWidth(420);
+
+            Label text3 = new Label(part3);
+            text3.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 28px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+            text3.setWrapText(true);
+            text3.setMaxWidth(420);
+
+            hButtonBox.setSpacing(50);
+
+            hButtonBox.getChildren().addAll(text1, text2, text3);
+
+
+        } else if (countStep == 6) {
+
+            contentLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
+                    " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+
+            stepLabel.setText("Step 5: Determine Winners");
+            contentLabel.setText("After 7 rounds of questions, the players with the most money will be the winners. Good luck!");
+            homeButton.setOnAction(e -> {
+                countStep = 0;
+                start(stage);
+            });
+        }
+
+        backButton.setOnAction(e -> {
+            if (countStep == 0) {
+                start(stage);
+            } else if (countStep == 1) {
+                countStep = 0;
+                showRuleScreen(stage);
+            } else if (countStep == 2) {
+                countStep = 1;
+                showRuleScreen(stage);
+            } else if (countStep == 3) {
+                countStep = 2;
+                vButtonBox.getChildren().remove(hButtonBox);
+                vButtonBox.getChildren().add(contentLabel);
+                showRuleScreen(stage);
+            } else if (countStep == 4) {
+                countStep = 3;
+                showRuleScreen(stage);
+            } else if (countStep == 5) {
+                countStep = 4;
+                showRuleScreen(stage);
+            } else if (countStep == 6) {
+                vButtonBox.getChildren().remove(contentLabel);
+                vButtonBox.getChildren().add(hButtonBox);
+
+                countStep = 5;
+                mainMenuPane.getChildren().remove(homeButton);
+                mainMenuPane.getChildren().add(nextButton);
+                showRuleScreen(stage);
+            }
+        });
+
+
+        nextButton.setOnAction(e -> {
+            if (countStep == 0) {
+                countStep = 1;
+                showRuleScreen(stage);
+            } else if (countStep == 1) {
+                countStep = 2;
+                showRuleScreen(stage);
+            } else if (countStep == 2) {
+                vButtonBox.getChildren().remove(contentLabel);
+                vButtonBox.getChildren().add(hButtonBox);
+                countStep = 3;
+                showRuleScreen(stage);
+            } else if (countStep == 3) {
+                countStep = 4;
+                showRuleScreen(stage);
+            } else if (countStep == 4) {
+                countStep = 5;
+                showRuleScreen(stage);
+            } else if (countStep == 5) {
+                vButtonBox.getChildren().add(contentLabel);
+                vButtonBox.getChildren().remove(hButtonBox);
+                countStep = 6;
+                mainMenuPane.getChildren().remove(nextButton);
+                mainMenuPane.getChildren().add(homeButton);
+                showRuleScreen(stage);
+            }
+
+        });
+
+
     }
 
     private void showPlayerSelectionScreen( Stage stage) {
@@ -416,10 +690,6 @@ public class GUI extends Application {
 
 //        backgroundImage.setImage(new Image("file:ready_to_play_bg.jpg"));
         vButtonBox.setSpacing(40) ;
-
-
-        Label readyLabel = new Label("Are you ready to play ?" );
-        readyLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: rgba(246,98,6,0.94); -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
         playGameButton.setText("Play") ;
@@ -649,16 +919,11 @@ public class GUI extends Application {
         playGameButton.setText("Continue");
 
 //        backgroundImage.setImage(new Image("file:question_bg.jpg"));
-        Button homeButton = new Button("Home") ;
-        homeButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
-        homeButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
-
-        homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
         homeButton.setOnAction(e ->{
             playerCount =1 ;
             paused = false;
-            GotBack = false;
+            gotBack = false;
             game.clearGame() ;
             start(stage);
         });
@@ -872,22 +1137,21 @@ public class GUI extends Application {
 
 
 //        betCountDownLabel.setText(Integer.toString(currentSecond) );
-        playerBalanceLabel.setText("Your Current Balance: "+ game.getPlayer(playerCount - 1 ).getFund()+"$") ;
+        playerBalanceLabel.setText("Your Current Balance: $" + game.getPlayer(playerCount - 1).getFund());
 
         long slotVal = game.getValSlot(game.getPlayer(playerCount -1 ).getBetIdx());
         if(slotVal != -1 ) {
-            chosenSLotLabel.setText("Your chosen slot: \"" + slotVal + "\"");
-        }
-        else chosenSLotLabel.setText("Your chosen slot: \"ALL ANSWERS TOO HIGH\""
+            chosenSLotLabel.setText("Your Chosen Slot: \"" + slotVal + "\"");
+        } else chosenSLotLabel.setText("Your Chosen Slot: \"ALL ANSWERS TOO HIGH\""
         );
 
 
         String[] buttonMoneyLabels = {
-                "100$",
-                "500$",
-                "1000$",
-                "5000$",
-                "10000$"
+                "$100",
+                "$500",
+                "$1000",
+                "$5000",
+                "$10000"
         };
 
 
@@ -1025,28 +1289,28 @@ public class GUI extends Application {
                         if (!player.getBetStatus()  ) {
 
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayer(playerCount - 1 ).getName()
-                                    + " did not make a guess and wins 0$");
+                                    + " did not make a guess and wins $0");
 
                         }
                         else if(!game.isWinSlot(player.getBetIdx(), game.getWinSlot(winGuess))) {
                             player.setFund(player.getFund() - player.getBetAmounts());
 
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayer(playerCount - 1 ).getName()
-                                    + " loses " + player.getBetAmounts() + "$") ;
+                                    + " loses $" + player.getBetAmounts());
                         }
                         else{
 
 
                             int bonus = game.calculateBonus(game.getWinSlot(winGuess), player.getBetAmounts());
-                            player.setFund(player.getFund() + bonus);
+                            player.setFund(player.getFund() + bonus - player.getBetAmounts());
 
                             bonusLabelList.get((playerCount) - 1 ).setText(game.getPlayer(playerCount - 1 ).getName()
-                                                                                + " wins "+ bonus + "$") ;
+                                    + " wins $" + bonus);
 
                         }
 
                         if(game.getPlayer(playerCount-1  ).getGuess() == correctAnswer  ) {
-                            bonusLabelList.get(playerCount-1   ).setText(bonusLabelList.get(playerCount -1   ).getText() + " and gets 5000$ for a correct guess");
+                            bonusLabelList.get(playerCount - 1).setText(bonusLabelList.get(playerCount - 1).getText() + " and gets $5000 for a correct guess");
                             player.setFund(player.getFund() + 5000);
                         }
                         playerCount++ ;
@@ -1154,7 +1418,7 @@ public class GUI extends Application {
 
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
-            GotBack = false;
+            gotBack = false;
             game.clearGame() ;
             start(stage);
 
