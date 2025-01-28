@@ -14,10 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -73,7 +72,7 @@ public class GUI extends Application {
     private final Button exitGameButton = new Button("Exit Game");
     private final Label readyLabel = new Label("Are you ready?");
 
-    private final Label mainTitle = new Label("WITS & WAGERS");
+//    private final Label mainTitle = new Label("WITS & WAGERS");
 
     private final Label winnersTitle = new Label("WINNER(S)") ;
 
@@ -119,13 +118,42 @@ public class GUI extends Application {
     Button homeButton = new Button("Home");
     private boolean gotBack = false;
     private int countStep = 0;
+    private void setBackgroundImage(Pane pane) {
+        ImageView backgroundImage = new ImageView(new Image("file:src/main/java/com/nhan/witsandwagers/images/Artboard 1.png"));
+        backgroundImage.setFitWidth(1920); // Set the width to match the pane
+        backgroundImage.setFitHeight(1080); // Set the height to match the pane
+        backgroundImage.setPreserveRatio(true); // Preserve the aspect ratio
 
+        // Bind the image size to the window size
+        backgroundImage.fitWidthProperty().bind(pane.widthProperty());
+        backgroundImage.fitHeightProperty().bind(pane.heightProperty());
+
+        // Add the background image to the pane
+        pane.getChildren().add(0, backgroundImage); // Add at the first position
+    }
+    private void setMainTitleImage() {
+        // Load the image
+        Image mainTitleImage = new Image("file:src/main/java/com/nhan/witsandwagers/images/Asset 9.png");
+
+        // Create an ImageView for the image
+        ImageView mainTitleImageView = new ImageView(mainTitleImage);
+        mainTitleImageView.setFitWidth(1000); // Set the desired width
+        mainTitleImageView.setPreserveRatio(true); // Preserve the aspect ratio
+
+        // Position the ImageView at the top and center
+        StackPane.setAlignment(mainTitleImageView, Pos.TOP_CENTER);
+        StackPane.setMargin(mainTitleImageView, new Insets(60, 0, 0, 0)); // Add margin from the top
+
+        // Add the ImageView to the main menu pane
+        mainMenuPane.getChildren().add(mainTitleImageView);
+    }
     private void initialize(Stage stage ) {
 
         mainMenuPane.setPrefSize(1920, 1080);
-
+//        mainMenuPane.setBackground("file:src/main/java/com/nhan/witsandwagers/images/Artboard 1.png");
         mainMenuPane.setStyle("-fx-background-color: #069f4a;");
-
+        setBackgroundImage(mainMenuPane);
+        setMainTitleImage();
 
         questionTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ff8800;" +
                 " -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
@@ -200,25 +228,25 @@ public class GUI extends Application {
 
         answerField.setAlignment(Pos.CENTER);
         notificationLabel.setStyle("-fx-font-size: 35px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
-        ImageView pauseIcon = new ImageView(new Image("file:/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/images/pause.png")); // Use the uploaded image path
-        pauseIcon.setFitWidth(150); // Set the size of the icon
-        pauseIcon.setFitHeight(150);
+        ImageView pauseIcon = new ImageView(new Image("file:src/main/java/com/nhan/witsandwagers/images/Asset 2.png")); // Use the uploaded image path
+        pauseIcon.setFitWidth(100); // Set the size of the icon
+        pauseIcon.setFitHeight(100);
         pauseButton.setGraphic(pauseIcon);
         pauseButton.setStyle("-fx-background-color: transparent;"); // Make the button background transparent
         pauseButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.1));
         pauseButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.1));
 
         StackPane.setAlignment(pauseButton, Pos.TOP_LEFT); // Position at the top-left corner
-        StackPane.setMargin(pauseButton, new Insets(30, 0, 0, 30)); // Add margin for spacing
+        StackPane.setMargin(pauseButton, new Insets(20, 0, 0, 20)); // Add margin for spacing
 
 
-        mainTitle.setStyle(
-                "-fx-text-fill: white;" +
-                        "-fx-font-size: 88px;" + // Font size
-                        "-fx-font-family: 'Comic Sans MS';" + // Font family
-                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
-                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
-        );
+//        mainTitle.setStyle(
+//                "-fx-text-fill: white;" +
+//                        "-fx-font-size: 88px;" + // Font size
+//                        "-fx-font-family: 'Comic Sans MS';" + // Font family
+//                        "-fx-effect: dropshadow(gaussian, black, 8, 0.7, 2, 2)," + // Outer black shadow
+//                        "dropshadow(gaussian, red, 8, 0.7, -2, -2);" // Inner red shadow for border effect
+//        );
 //
         readyLabel.setStyle(
                 "-fx-text-fill: white;" +
@@ -243,8 +271,8 @@ public class GUI extends Application {
 
 
         // Position the title at the top and center
-        StackPane.setAlignment(mainTitle, Pos.TOP_CENTER);
-        StackPane.setMargin(mainTitle, new Insets(50, 0, 0, 0)); // Add margin from the top
+//        StackPane.setAlignment(mainTitle, Pos.TOP_CENTER);
+//        StackPane.setMargin(mainTitle, new Insets(50, 0, 0, 0)); // Add margin from the top
 
         winnersTitle.setStyle(
                 "-fx-text-fill: #f8f403;" +
@@ -290,7 +318,8 @@ public class GUI extends Application {
         exitGameButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
         gameRuleButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
-        nextButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.1));
+        nextButton.setDefaultButton(true);
+        nextButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.07));
         nextButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
         nextButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 35px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
         StackPane.setAlignment(nextButton, Pos.BOTTOM_RIGHT);
@@ -303,13 +332,18 @@ public class GUI extends Application {
         StackPane.setMargin(backButton, new Insets(0, 0, 80, 100));
 
         // Bind button sizes to window size
+        playGameButton.setDefaultButton(true);
         playGameButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
         playGameButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
+        playGameButton.setMinWidth(1000); // Set minimum width to 1000 pixels
+
         exitGameButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.14));
         exitGameButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
+        exitGameButton.setMinWidth(1000);
+        // Set minimum width to 1000 pixels
         gameRuleButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
         gameRuleButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
-
+        gameRuleButton.setMinWidth(1000);
 
         homeButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
         homeButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
@@ -326,9 +360,12 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         mainMenuPane.getChildren().clear();
+        setBackgroundImage(mainMenuPane);
+        setMainTitleImage();
         vButtonBox.getChildren().clear();
         vButtonBox.setSpacing(40);
-
+        setBackgroundImage(mainMenuPane);
+        setMainTitleImage();
         playGameButton.setText("Play Game");
         playGameButton.setOnAction(e -> {
 
@@ -340,18 +377,18 @@ public class GUI extends Application {
             mainMenuPane.getChildren().clear();
             vButtonBox.getChildren().clear();
             vButtonBox.getChildren().addAll(stepLabel, contentLabel);
-            mainMenuPane.getChildren().addAll(mainTitle, vButtonBox, backButton, nextButton);
+            mainMenuPane.getChildren().addAll(vButtonBox, backButton, nextButton);
             showRuleScreen(primaryStage);
 
         });
 
 
         vButtonBox.getChildren().addAll(playGameButton, exitGameButton, gameRuleButton);
-        mainMenuPane.getChildren().addAll(mainTitle, vButtonBox);
+        mainMenuPane.getChildren().addAll(vButtonBox);
 
         if (!gotBack) {
             gotBack = true;
-            game.loadQuestions("/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/Elements/questions.txt");
+            game.loadQuestions("src/main/java/com/nhan/witsandwagers/Elements/questions.txt");
         }
 
         if (!gameStarted) {
@@ -366,8 +403,7 @@ public class GUI extends Application {
     }
 
     private void showRuleScreen(Stage stage) {
-
-
+        setBackgroundImage(mainMenuPane);
         if (countStep == 0) {
             contentLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff;" +
                     " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
@@ -555,7 +591,7 @@ public class GUI extends Application {
             }
         });
 
-
+        nextButton.setMinWidth(1000);
         nextButton.setOnAction(e -> {
             if (countStep == 0) {
                 countStep = 1;
@@ -592,15 +628,17 @@ public class GUI extends Application {
 
         // Clear the current children of the main pane
         mainMenuPane.getChildren().clear();
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
 
-        vButtonBox.setSpacing(50) ;
+        vButtonBox.setSpacing(30) ;
 
         // Background image
 //        backgroundImage.setImage(new Image("file:player_select_bg.jpg"));
 
 
         backButton.setOnAction(e -> start(stage));
+        backButton.setMinWidth(300);
 
         Button[] playerButtons = new Button[6];
         for (int i = 0; i < 6; i++) {
@@ -608,6 +646,7 @@ public class GUI extends Application {
             playerButtons[i] = new Button("Play with " + (i +2)  + " players");
 
             // Bind button size to window size
+            playerButtons[i].setMinWidth(1000);
             playerButtons[i].prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.185));
             playerButtons[i].prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
             playerButtons[i].setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
@@ -628,6 +667,8 @@ public class GUI extends Application {
     private void inputPlayersNameScreen(Stage stage) {
         // Clear the current children of the main pane
         mainMenuPane.getChildren().clear();
+        setBackgroundImage(mainMenuPane);
+        setMainTitleImage();
         nameField.clear() ;
         vButtonBox.getChildren().clear() ;
         vButtonBox.setSpacing(10) ;
@@ -649,6 +690,7 @@ public class GUI extends Application {
 
         inputNameLabel.setText("Please enter a name for Player " + (playerCount ));
 
+        nextButton.setMinWidth(200);
         nextButton.setOnAction(e -> {
             String name = nameField.getText().trim();
             if (name.isEmpty()) {
@@ -666,7 +708,7 @@ public class GUI extends Application {
                 }
             }
         });
-
+        backButton.setMinWidth(120);
         backButton.setOnAction(e -> {
 
             if (playerCount > 1) {
@@ -682,10 +724,11 @@ public class GUI extends Application {
 
         vButtonBox.getChildren().addAll( nameField, hButtonBox, notificationLabel);
         localVBox.getChildren().addAll(inputNameLabel,vButtonBox) ;
-        mainMenuPane.getChildren().addAll( mainTitle ,localVBox);
+        mainMenuPane.getChildren().addAll(localVBox);
     }
     private void showReadyToPlayScreen(Stage stage )  {
         mainMenuPane.getChildren().clear();
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
 
 //        backgroundImage.setImage(new Image("file:ready_to_play_bg.jpg"));
@@ -708,6 +751,7 @@ public class GUI extends Application {
     }
     private void showCountdownScreen( Stage stage) {
         mainMenuPane.getChildren().clear();
+        setBackgroundImage(mainMenuPane);
         countdown.getKeyFrames().clear();
 
 //        backgroundImage.setImage(new Image("file:countdown_bg.jpg"));
@@ -749,7 +793,7 @@ public class GUI extends Application {
     private void showQuestionScreen(Stage stage ){
 
         mainMenuPane.getChildren().clear() ;
-
+        setBackgroundImage(mainMenuPane);
         waitingScreenLabel.setText("Question " + questionCount);
 
 
@@ -766,6 +810,7 @@ public class GUI extends Application {
     private void showGuessScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear();
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear();
         countdown.getKeyFrames().clear();
         vButtonBox.setSpacing(20);
@@ -775,6 +820,14 @@ public class GUI extends Application {
 
         questionNumTitleOfShowGuessScreen.setText("Question " + questionCount );
         questionTitle.setText(game.getQuestionElement(questionCount - 1).getQuestion());
+        questionTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ff8800;" +
+                " -fx-font-size: 50px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);" +
+                "-fx-wrap-text:true; -fx-alignment: center");
+//
+
+        StackPane.setAlignment(questionTitle, Pos.TOP_CENTER);
+        StackPane.setMargin(questionTitle, new Insets(130, 50, 0, 50)); // Add margin from the top
+        questionTitle.setMinHeight(Region.USE_PREF_SIZE);
         requestPlayerLabel.setText(game.getPlayer(playerCount - 1).getName ()  + ", let's try guessing a number!");
 //        backgroundImage.setImage(new Image("file:question_bg.jpg"));
         if (!paused) {
@@ -871,15 +924,21 @@ public class GUI extends Application {
         guessCountdownLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: gold; -fx-font-size: 130px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
         guessCountdownLabel.setAlignment(Pos.CENTER);
 
-        StackPane.setAlignment(guessCountdownLabel, Pos.TOP_CENTER);
-        StackPane.setMargin(guessCountdownLabel, new Insets(180, 0, 0, 0)); // Add margin from the top
+
+        StackPane.setAlignment(guessCountdownLabel, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(guessCountdownLabel, new Insets(0, 0, 150, 0)); // Add margin from the top
+//        StackPane.setAlignment(countdownLabel, Pos.TOP_CENTER);
+//        StackPane.setMargin(countdownLabel, new Insets(180, 0, 0, 0));
 
 
         note.setText("Note: If you don't enter a guess within 20 seconds, your guess will automatically be set to 0.") ;
-
+        StackPane.setAlignment(note, Pos.BOTTOM_CENTER);
+        StackPane.setMargin(note, new Insets(0, 0, 130, 0)); // Add margin for spacing
 
 
         vButtonBox.getChildren().addAll(requestPlayerLabel, answerField, nextButton,notificationLabel);
+        StackPane.setAlignment(vButtonBox, Pos.CENTER);
+        StackPane.setMargin(vButtonBox, new Insets(100, 0, 0, 0)); // Add margin for spacing
         mainMenuPane.getChildren().addAll(questionNumTitleOfShowGuessScreen, questionTitle, guessCountdownLabel, note, vButtonBox, pauseButton);
 
 
@@ -887,6 +946,7 @@ public class GUI extends Application {
     private void showTurnScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear() ;
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
         vButtonBox.setSpacing(10);
 
@@ -912,6 +972,7 @@ public class GUI extends Application {
     }
     private void showPauseScreen(Stage stage, int chooseScreen) {
         mainMenuPane. getChildren().clear() ;
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
         vButtonBox.setSpacing(30 ) ;
         paused = true ;
@@ -942,13 +1003,19 @@ public class GUI extends Application {
         }) ;
 
         vButtonBox.getChildren().addAll(playGameButton,homeButton, exitGameButton);
-        mainMenuPane.getChildren().addAll( mainTitle, vButtonBox);
+        mainMenuPane.getChildren().addAll(vButtonBox);
 
     }
     private void showTableScreen(Stage stage) {
-        hButtonBox.getChildren().clear();
-        hButtonBox.setSpacing(15);
+        countdown.getKeyFrames().clear();
+        mainMenuPane.getChildren().clear(); // Clear previous content
+        hButtonBox.getChildren().clear();   // Clear horizontal layout
+        setBackgroundImage(mainMenuPane);
+        hButtonBox.setSpacing(15);          // Set spacing between button groups
+        hButtonBox.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
 
+        StackPane.setAlignment(hButtonBox,Pos.BOTTOM_CENTER)  ;
+        StackPane.setMargin(hButtonBox, new Insets(150,0, 0 ,0 ) ) ;
 
         if (!betScreenisShowed) {
             betScreenisShowed = true;
@@ -956,7 +1023,7 @@ public class GUI extends Application {
             betCountDownLabel.setText(Integer.toString(currentSecond));
 
             mainMenuPane.getChildren().clear(); // Clear previous content
-
+            setBackgroundImage(mainMenuPane);
             countdown.getKeyFrames().add(
 
                     new KeyFrame(Duration.seconds(1), e -> {
@@ -991,12 +1058,12 @@ public class GUI extends Application {
             );
             countdown.setCycleCount(currentSecond);
             countdown.play();
-            mainMenuPane.getChildren().addAll(mainTitle, betCountDownLabel, pauseButton, hButtonBox);
+            mainMenuPane.getChildren().addAll(betCountDownLabel, pauseButton, hButtonBox);
 
         } else if (paused) {
 
             mainMenuPane.getChildren().clear();
-            mainMenuPane.getChildren().addAll(mainTitle, betCountDownLabel, pauseButton, hButtonBox);
+            mainMenuPane.getChildren().addAll(betCountDownLabel, pauseButton, hButtonBox);
             paused = false;
             countdown.play();
 
@@ -1012,7 +1079,7 @@ public class GUI extends Application {
         StackPane.setMargin(hButtonBox, new Insets(200,0, 0 ,0 ) ) ;
 
         StackPane.setAlignment(betCountDownLabel, Pos.TOP_RIGHT) ;
-        StackPane.setMargin(betCountDownLabel, new Insets(30, 100, 0, 0)); // Add margin for spacing
+        StackPane.setMargin(betCountDownLabel, new Insets(30, 30, 0, 0)); // Add margin for spacing
 
         // Pause button action
         pauseButton.setOnAction(e -> {
@@ -1034,45 +1101,63 @@ public class GUI extends Application {
                 "5to1"
         };
 
-        for (int i = 0 ; i < 8 ; i ++) {
+        String[] buttonImagePaths = new String[]{
+                "file:src/main/java/com/nhan/witsandwagers/images/6to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/5to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/4to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/3to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/2to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/3to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/4to1.png",
+                "file:src/main/java/com/nhan/witsandwagers/images/5to1.png"
+        };
+
+        for (int i = 0; i < 8; i++) {
             // Create a VBox for each button group
 
             VBox vButtonBox = new VBox();
             vButtonBox.setSpacing(5); // Space between text and button
 
-            // Top text
-            Text text1 = new Text(buttonSlotLabels[i]);
-            if(i == 0 ) text1.setStyle("-fx-aligment: center;-fx-fill: #f6e406; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
-            else text1.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
-
-            text1.setRotate(180);
+//            // Top text
+//            Text text1 = new Text(buttonSlotLabels[i]);
+//            if(i == 0 ) text1.setStyle("-fx-aligment: center;-fx-fill: #f6e406; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+//            else text1.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+//
+//            text1.setRotate(180);
             // Button
             Button button = new Button();
+            ImageView buttonImage = new ImageView(new Image(buttonImagePaths[i]));
+            buttonImage.setFitWidth(138); // Set the width of the image
+            buttonImage.setFitHeight(450); // Set the height of the image
 
-
+            // Create a StackPane to overlay text on the image
+            StackPane stackPane = new StackPane();
+            stackPane.setPrefSize(138, 450); // Set preferred size to match the button
+            stackPane.setMinSize(138, 450);  // Set minimum size to match the button
+            stackPane.setMaxSize(138, 450);  // Set maximum size
+            stackPane.getChildren().add(buttonImage);
             if (i == 0) {
-                Text text3 = new Text();
-                text3.setText("ALL ANSWERS TOO HIGH");
-                text3.setStyle("-fx-alignment: center; -fx-fill: blue; -fx-font-size: 25px;"); // Increased font size
-                text3.setRotate(-90);
-                text3.setWrappingWidth(160); // Wrap the text within a specific width
+                if(currentSecond > 0 ) {
+                    button.setOnAction(e -> {
+                        countdown.stop();
+                        currentSecond = Integer.parseInt(betCountDownLabel.getText());
 
-                button.setGraphic(text3);
-
-                button.setOnAction(e -> {
-                    if (currentSecond > 0) {
-                        game.getPlayer(playerCount - 1).setBetIdx(0);
+                        game.getPlayer(playerCount -1 ).setBetIdx(0);
                         showBetScreen(stage);
-                    }
 
-                });
-
+                    });
+                }
             } else if (game.getValSlot(i) != -1) {
                 Text text3 = new Text();
                 text3.setStyle("-fx-alignment: center; -fx-fill: white; -fx-font-size: 25px;"); // Increased font size
                 text3.setText(Long.toString(game.getValSlot(i)));
+                text3.setWrappingWidth(300);
+                text3.setTextAlignment(TextAlignment.CENTER);
                 text3.setRotate(-90);
-                text3.setWrappingWidth(160); // Wrap the text within a specific width
+                text3.setStyle("-fx-fill: white; -fx-font-size: 45px; -fx-font-family: 'Comic Sans MS';");
+
+                stackPane.getChildren().add(text3);
+                StackPane.setAlignment(text3, Pos.CENTER);
 
                 button.setGraphic(text3);
                 if(currentSecond > 0 ) {
@@ -1086,31 +1171,15 @@ public class GUI extends Application {
                     });
                 }
             }
-
-            button.setPrefWidth(180); // Fixed width
-            button.setPrefHeight(500); // Fixed height
-
-            button.setMaxWidth(180); // Maximum width
-            button.setMaxHeight(500); // Maximum height
-
-
-            button.setStyle(
-                    "-fx-background-color: transparent;" + // Transparent body
-                            "-fx-border-color: white;" +           // White border
-                            "-fx-border-width: 3;" +              // Border thickness
-                            "-fx-text-fill: white;" +             // White text
-                            "-fx-font-size: 14px;" +              // Font size for better readability
-                            "-fx-border-radius: 20;" +            // Rounded border corners
-                            "-fx-padding: 10;"                    // Padding inside button
-            );
-            // Bottom text (rotated)
-            Text text2 = new Text(buttonSlotLabels[i]);
-            if (i == 0 )text2.setStyle("-fx-aligment: center;-fx-fill: #f6e406; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
-            else text2.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
+            setMainTitleImage();
+            // Set the StackPane as the graphic for the button
+            button.setGraphic(stackPane);
+            button.setAlignment(Pos.CENTER);
+            button.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
 
             // Add text and button to VBox
-            vButtonBox.setAlignment(Pos.CENTER) ;
-            vButtonBox.getChildren().addAll(text1, button, text2);
+            vButtonBox.setAlignment(Pos.CENTER);
+            vButtonBox.getChildren().addAll(button);
 
             // Add VBox to horizontal box
             hButtonBox.getChildren().add(vButtonBox);
@@ -1122,13 +1191,15 @@ public class GUI extends Application {
 
         if (paused) {
             mainMenuPane.getChildren().clear();
-            mainMenuPane.getChildren().addAll(mainTitle, betCountDownLabel, vButtonBox, pauseButton);
+            setBackgroundImage(mainMenuPane);
+            mainMenuPane.getChildren().addAll(betCountDownLabel, vButtonBox, pauseButton);
             paused = false;
             countdown.play();
         } else {
             mainMenuPane.getChildren().removeAll(hButtonBox, pauseButton);
             mainMenuPane.getChildren().addAll(vButtonBox, pauseButton);
         }
+        setBackgroundImage(mainMenuPane);
         hButtonBox.getChildren().clear() ;
         vButtonBox.getChildren().clear();
 //        countdown.getKeyFrames().clear( );
@@ -1158,7 +1229,7 @@ public class GUI extends Application {
         for( int i = 0 ; i < 5 ; i++){
             Button moneyButton = new Button() ;
             moneyButton.setText(buttonMoneyLabels[i]);
-            moneyButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.118));
+            moneyButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.150));
             moneyButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.000008));
             moneyButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #dc6606; -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
             int finalI = i;
@@ -1207,7 +1278,7 @@ public class GUI extends Application {
     }
     private void showBonusSummaryScreen(Stage stage) {
         mainMenuPane.getChildren().clear();
-
+        setBackgroundImage(mainMenuPane);
         bonusLabel.setText("Bonus Summary") ;
 
         pause.setDuration(Duration.seconds(2) );
@@ -1224,6 +1295,7 @@ public class GUI extends Application {
     }
     private void showBonusDetailScreen(Stage stage ) {
         mainMenuPane.getChildren().clear() ;
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
         countdown.getKeyFrames().clear() ;
         vButtonBox.setSpacing(35) ;
@@ -1345,6 +1417,7 @@ public class GUI extends Application {
     }
     private void showResultScreen(Stage stage ){
         mainMenuPane.getChildren().clear() ;
+        setBackgroundImage(mainMenuPane);
         waitingScreenLabel.setText( "Final Result" ) ;
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
@@ -1356,6 +1429,7 @@ public class GUI extends Application {
     private void showResultDetailScreen(Stage stage){
 
         mainMenuPane.getChildren().clear() ;
+        setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
         countdown.getKeyFrames().clear() ;
         vButtonBox.setSpacing(30);
@@ -1414,6 +1488,8 @@ public class GUI extends Application {
     }
     private void showThankYouScreen(Stage stage ){
         mainMenuPane.getChildren().clear() ;
+        setBackgroundImage(mainMenuPane);
+        setMainTitleImage();
         waitingScreenLabel.setText( "Thank You!" ) ;
 
         pause.setDuration(Duration.seconds(2));

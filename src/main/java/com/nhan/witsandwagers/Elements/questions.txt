@@ -6,6 +6,102 @@ How many countries have hosted the FIFA World Cup ?_18_2
 What is the height of Mount Everest in metres ?_8849_2
 What is the population of Germany in 2024 ?_84552242_3
 The answer is a 2-digit number, guess what is it ?_88_3
+To the nearest 1,000 how many languages are there in the world?_7_2
+How many verses are in the New Testament? (KJV) (to the nearest 1,000)_8_3
+To the nearest 1,000 how many episodes of Coronation Street have been broadcast?_8_2
+What percentage of people in the world live on an island?_10_3
+How long, in seconds, is the longest recorded flight by a chicken?_13_2
+To the nearest 1,000 miles, how long is the Great Wall of China?_13_2
+What is the highest price (in £1,000's) paid for a Barbie doll in an auction?_18_3
+How many people around the world (in millions) share your birthday?_19_2
+How many flavours of Coffee does a Starbucks Store sell?_19_1
+How long, in inches, is a Giraffe's tongue?_20_1
+How many verses are in the Old Testament? (KJV) (to the nearest 1,000)_23_3
+What is the world record for the most novels published in one year?_23_3
+What is the diameter (in miles) of the largest observed comet?_25_3
+How many minutes can an iguana stay underwater?_28_2
+How many quills (in 1,000's) does a porcupine have?_30_2
+In 2011, to the nearest 1,000, how many couples received messages from the Queen for reaching their diamond wedding anniversary?_30_3
+In 1,000's how many McDonalds Restaurants are there in the world?_30_2
+How many verses are in the bible? (KJV) (to the nearest 1,000)_31_3
+How long, to the nearest hour, is the longest recorded after dinner speech?_32_3
+If you counted the seconds without stopping how long (in years) would it take you to count up one billion?_32_3
+On average how many earthquakes are there on the Earth per day?_35_2
+In Miles, if you drew a line with a normal lead pencil, how long would it be?_35_2
+How many plays did William Shakespeare write altogether?_39_2
+How many flavours of ice cream does Ben & Jerry's sell?_41_1
+How many eyes are there on a standard pack of cards?_42_1
+How many letters are in the longest word in the English language?_45_2
+How many known moons does the planet Saturn have?_53_2
+How many letters/characters are in the name of the Welsh village which is usually shortened to Llanfair PG?_58_3
+How tall, in inches, is Danny Devito?_60_1
+How long (in seconds) is the shortest 'proper' film ever made?_60_2
+The 1929 Grand National holds the record for the most runners. How many?_66_2
+How much, in £millions, do foreign diplomats owe in unpaid London congestion charges? (July 2013)_67_3
+What percentage of emails is spam?_68_2
+As of May 9th 2014 how many 1,000's of games are in the Board Game Geek boardgame database?_70_2
+How high (in inches) can a penguin jump in the air?_72_1
+How long, in Roman Miles, was Hadrian's Wall?_75_2
+Elvis Presley holds the record for the most top 10 hit singles. How many?_76_2
+How often, in years, is Halley's comet visible from the Earth?_76_2
+To the nearest hour, what is the world record for standing on one leg?_77_3
+How many words are in the longest verse in the KJV?_78_2
+How many of the participating countries (National Olympic Committees) in the 2012 London Olympic Games won at least one medal?_79_2
+In the official Scrabble dictionary how many words end with the letter z?_81_2
+What is the longest interval (in days) between the birth of twins?_87_3
+How many bodies of water (lakes, meres, waters, tarns, reservoirs, etc) are there in the Lake District?_94_2
+How many English versions of the COMPLETE Bible are there?_96_2
+5 horses share the record for being Grand national winners with the longest odds. What was their starting price?_100_3
+The Cullinan diamond is the largest diamond ever found. How long (in mm) is it?_105_2
+How many confirmed chemical elements are there in the Periodic Table?_114_2
+To the nearest 1,000 how many people were in the longest conga line?_120_2
+Cliff Richard holds the record for the most top 40 hit singles. How many?_124_2
+Formula Rossa in Abu Dhabi is the world's fastest roller coaster. What is its top speed? (mph)_149_2
+How many sonnets did William Shakespeare write altogether?_154_2
+How many verses has the Greek national anthem?_158_2
+How many billions of emails are sent every day?_160_2
+What is the largest margin of victory in the Eurovision song contest?_169_2
+How many verses are in the longest chapter in the KJV?_176_2
+How many nations / member states are there in the United Nations?_193_2
+How many thousands of portraits are there in the National Portrait Gallery?_195_2
+How many countries (National Olympic Committees) took part in the 2012 London Olympic Games?_204_2
+How many bones are in a typical adult skeleton?_206_1
+How many men's national football teams are there in FIFA?_209_2
+Dark Side of the Moon by Pink Floyd holds the record for the most weeks in the album charts for a group. How many weeks?_211_2
+How many episodes of Friends were there in total in the ten-season US comedy?_236_2
+How long (in hours) is the longest film ever made?_240_2
+How deep (in feet) is the deepest lake in England?_243_2
+How many chapters are in the New Testament? (KJV)_260_2
+Starting with the Apostle Peter and finishing with the current Pope Francis (Fransisco) how many popes have there been?_266_2
+Champion Jockey (Flat Racing) - What is the record for the most winners in a season?_269_2
+Champion Jockey (Jump Racing) - What is the record for the most winners in a season?_289_2
+How many words are in the shortest book in the bible? (3 John) (KJV)_294_2
+How many bones does a new-born baby have?_300_1
+In 2012 how much did parents spend on average per child on Christmas presents?_312_2
+How many millions of miles did the tail of Comet Hyakutake stretch?_360_2
+What is the largest winning score in the Eurovision song contest?_387_2
+In the run up to Christmas 2013 how many items did Amazon sell worldwide per second on Cyber Monday?_426_2
+How many languages has the FULL Bible been translated into?_518_2
+How many passengers survived the sinking of the Titanic?_710_2
+How many novels did Barbara Cartland write altogether?_723_2
+How many pieces are in the world's largest drum kit?_813_2
+In 2011 how many people received birthday messages from the Queen for reaching their 105th (and above) birthday?_917_2
+How many calories are in a Big Mac and Medium Fries? (UK Stores)_920_2
+How many chapters are in the Old Testament? (KJV)_929_2
+How many islands are there around the coast of Britain?_1040_2
+What is the record number of dimples on a golf ball?_1070_2
+How many chapters are in the bible? (KJV)_1189_2
+How many McDonalds Restaurants are there in the UK?_1200_2
+How many promises are in the bible? (KJV)_1260_2
+The most viewed video on YouTube is 'PSY - Gangnam Style'. How many views have there been? (to nearest million)_1985_2
+How many passengers and crew were on the Titanic?_2224_2
+Steel Dragon 2000 in Japan is the world's longest roller coaster. How long is it? (metres)_2479_2
+The Cullinan diamond is the largest diamond ever found. How many carats is it?_3107_2
+Elain Davidson holds the world record for the most skin piercings on her body. How many times has she been pierced?_4225_2
+How many items are in the world's largest Hello Kitty collection?_4519_2
+How many lightning strikes are there on the Earth per minute?_6000_2
+How many people groups are there in the world?_9736_2
+In 2011 how many people received birthday messages from the Queen for reaching their 100th birthday?_9736_2
 
 
 
