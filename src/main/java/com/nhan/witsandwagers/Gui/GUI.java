@@ -138,7 +138,7 @@ public class GUI extends Application {
     private void setBackgroundImage(Pane pane) {
 
 
-        ImageView backgroundImage = new ImageView(new Image("file:src/main/java/com/nhan/witsandwagers/images/Artboard 1.png"));
+        ImageView backgroundImage = new ImageView(new Image(getClass().getResource("/images/Artboard 1.png").toExternalForm()));
         backgroundImage.setFitWidth(1920); // Set the width to match the pane
         backgroundImage.setFitHeight(1080); // Set the height to match the pane
         backgroundImage.setPreserveRatio(false); // Preserve the aspect ratio
@@ -152,61 +152,48 @@ public class GUI extends Application {
     }
     private void setMainTitle() {
         // Load the image
-        Image mainTitleImage = new Image("file:src/main/java/com/nhan/witsandwagers/images/Asset 9.png");
+        ImageView mainTitleImage = new ImageView(new Image(getClass().getResource("/images/Asset 9.png").toExternalForm()));
 
         // Create an ImageView for the image
-        ImageView mainTitleImageView = new ImageView(mainTitleImage);
-        mainTitleImageView.setFitWidth(1000); // Set the desired width
-        mainTitleImageView.setPreserveRatio(true); // Preserve the aspect ratio
+
+        mainTitleImage.setFitWidth(1000); // Set the desired width
+        mainTitleImage.setPreserveRatio(true); // Preserve the aspect ratio
 
         // Position the ImageView at the top and center
-        StackPane.setAlignment(mainTitleImageView, Pos.TOP_CENTER);
-        StackPane.setMargin(mainTitleImageView, new Insets(60, 0, 0, 0)); // Add margin from the top
+        StackPane.setAlignment(mainTitleImage, Pos.TOP_CENTER);
+        StackPane.setMargin(mainTitleImage, new Insets(60, 0, 0, 0)); // Add margin from the top
 
         // Add the ImageView to the main menu pane
-        mainMenuPane.getChildren().add(mainTitleImageView);
+        mainMenuPane.getChildren().add(mainTitleImage);
 
     }
 
     private void createBettingMat(Stage stage) {
-
-        bettingMat.getChildren().clear() ;
+        bettingMat.getChildren().clear();
         String[] buttonImagePaths = new String[]{
-                "file:src/main/java/com/nhan/witsandwagers/images/6to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/5to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/4to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/3to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/2to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/3to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/4to1.png",
-                "file:src/main/java/com/nhan/witsandwagers/images/5to1.png"
+            getClass().getResource("/images/6to1.png").toExternalForm(),
+            getClass().getResource("/images/5to1.png").toExternalForm(),
+            getClass().getResource("/images/4to1.png").toExternalForm(),
+            getClass().getResource("/images/3to1.png").toExternalForm(),
+            getClass().getResource("/images/2to1.png").toExternalForm(),
+            getClass().getResource("/images/3to1.png").toExternalForm(),
+            getClass().getResource("/images/4to1.png").toExternalForm(),
+            getClass().getResource("/images/5to1.png").toExternalForm()
         };
-        bettingMat.setSpacing(15);          // Set spacing between button groups
+        bettingMat.setSpacing(15); // Set spacing between button groups
         bettingMat.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
 
-
-
         for (int i = 0; i < 8; i++) {
-
             StackPane slotStackPane = new StackPane();
             slotStackPane.setPrefSize(138, 450); // Set preferred size to match the button
             slotStackPane.setMinSize(138, 450);  // Set minimum size to match the button
             slotStackPane.setMaxSize(138, 450);
 
-            // Create a VBox for each button group
-
-//            // Top text
-//            Text text1 = new Text(buttonSlotLabels[i]);
-//            if(i == 0 ) text1.setStyle("-fx-aligment: center;-fx-fill: #f6e406; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
-//            else text1.setStyle("-fx-aligment: center;-fx-fill: white; -fx-font-size: 30px; -fx-font-family: 'Comic Sans MS';");
-//
-//            text1.setRotate(180);
             // Button
             Button button = new Button();
             ImageView buttonImage = new ImageView(new Image(buttonImagePaths[i]));
             buttonImage.setFitWidth(138); // Set the width of the image
             buttonImage.setFitHeight(450); // Set the height of the image
-
 
             slotStackPane.getChildren().add(buttonImage);
             if (i == 0) {
@@ -215,7 +202,6 @@ public class GUI extends Application {
                         game.getPlayer(playerCount - 1).setBetIdx(0);
                         showBetScreen(stage);
                     }
-
                 });
             } else if (game.getValSlot(i) != -1) {
                 Text text = new Text();
@@ -229,19 +215,16 @@ public class GUI extends Application {
                 slotStackPane.getChildren().add(text);
                 StackPane.setAlignment(text, Pos.CENTER);
 
-
-                if(currentSecond > 0 ) {
+                if (currentSecond > 0) {
                     int finalI = i;
                     button.setOnAction(e -> {
                         if (currentSecond > 0) {
                             game.getPlayer(playerCount - 1).setBetIdx(finalI);
                             showBetScreen(stage);
                         }
-
                     });
                 }
             }
-
 
             // Set the StackPane as the graphic for the button
             button.setGraphic(slotStackPane);
@@ -250,7 +233,6 @@ public class GUI extends Application {
 
             bettingMat.getChildren().add(button);
         }
-
     }
     private void initialize(Stage stage ) {
 
@@ -336,7 +318,7 @@ public class GUI extends Application {
 
         answerField.setAlignment(Pos.CENTER);
         notificationLabel.setStyle("-fx-font-size: 35px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
-        ImageView pauseIcon = new ImageView(new Image("file:src/main/java/com/nhan/witsandwagers/images/Asset 2.png")); // Use the uploaded image path
+        ImageView pauseIcon = new ImageView(new Image(getClass().getResource("/images/Asset 2.png").toExternalForm())); // Use the uploaded image path
         pauseIcon.setFitWidth(100); // Set the size of the icon
         pauseIcon.setFitHeight(100);
         pauseButton.setGraphic(pauseIcon);
@@ -449,7 +431,7 @@ public class GUI extends Application {
         exitGameButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
 
 
-        gameRuleButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.15));
+        gameRuleButton.prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.2));
         gameRuleButton.prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
 
 
@@ -496,7 +478,7 @@ public class GUI extends Application {
 
         if (!gotBack) {
             gotBack = true;
-            game.loadQuestions("src/main/java/com/nhan/witsandwagers/Elements/questions.txt");
+            game.loadQuestions("Elements/questions.txt");
         }
 
         if (!gameStarted) {
