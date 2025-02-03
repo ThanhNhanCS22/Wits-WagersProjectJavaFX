@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -447,7 +449,11 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX(screenBounds.getMinX());
+        primaryStage.setY(screenBounds.getMinY());
+        primaryStage.setWidth(screenBounds.getWidth());
+        primaryStage.setHeight(screenBounds.getHeight());
 
         mainMenuPane.getChildren().clear();
         setBackgroundImage(mainMenuPane);
@@ -509,7 +515,7 @@ public class GUI extends Application {
                     " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
             stepLabel.setText("When To Play");
-            contentLabel.setText("Wits & Wagers is most fun with groups of maximum 7 people. We recommend playing " +
+            contentLabel.setText("Wits & Wagers is most fun with groups of 4-7 people. We recommend playing " +
                     "at holiday parties, family reunions, or any large gathering of friends. " +
                     "Be prepared for light-hearted banter, a little bravado, and a big dose of cheering!");
         } else if (countStep == 2) {
@@ -1463,7 +1469,7 @@ public class GUI extends Application {
 
                         Timeline delay = new Timeline(
                                 new KeyFrame(Duration.seconds(2), event -> {
-
+                                    winnersCount = 0;
                                     showThankYouScreen(stage );
 
                                 })
