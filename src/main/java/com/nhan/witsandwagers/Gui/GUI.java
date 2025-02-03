@@ -19,7 +19,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,97 +28,73 @@ import java.util.List;
 public class GUI extends Application {
 
 
-    private boolean betScreenisShowed = false;
+    private boolean betScreenisShowed = false;  //To check the betting Screen is showed or not.
+                                                // If not clear the mainMenuPane and add new UIs elements
+                                                // to the slot (table) scene.
 
-    private final Button gameRuleButton = new Button("How To Play");
+    private final Button gameRuleButton = new Button("How To Play"); //Click on this button to see game's rules
 
-    private final StackPane mainMenuPane = new StackPane();
+    private final StackPane mainMenuPane = new StackPane(); //Main pane pf the game to stack UI elements
 
-    private final Scene mainMenuScene = new Scene(mainMenuPane);
+    private final Scene mainMenuScene = new Scene(mainMenuPane); //to show the game
 
-    private final Game game = new Game();
+    private final Game game = new Game(); //To access  game's logic
 
-    private final Button nextButton = new Button("Next");
+    private final Button nextButton = new Button("Next"); // Implement once in global scope and reuse in
+                                                            // many scenes for moving to next other scene.
 
-    private final Button backButton = new Button("Back");
-    //Box
-    private final VBox vButtonBox = new VBox();
+    private final Button backButton = new Button("Back"); // Similar to nextButton,
+                                                    // Implement once in global scope and reuse in
+                                                    // many scenes for moving back.
+
+    private final VBox vButtonBox = new VBox(); //To UIs elements such as Button, Label, etc., vertically
 
     private final HBox hButtonBox = new HBox() ; // To arrange buttons horizontally
 
-    private final Label questionNumTitleOfShowGuessScreen = new Label( ) ;
+    private final Label questionNumTitleOfShowGuessScreen = new Label( ) ; // To show number of question in guess scene
+                                                                            // e.g: question 1
 
-    private final Label questionTitle = new Label() ;
-
-    private final VBox vTitleBox =new VBox() ;
-
-    private final Label requestPlayerLabel = new Label() ;
-
-    private final Label inputNameLabel = new Label();
-
-    private final TextField nameField = new TextField();
-
-    private final TextField answerField = new TextField() ;
-
-    private int numPlayers;
-
-    private final Label notificationLabel = new Label();
-
-    private final Button pauseButton = new Button();
-
-    private final Button playGameButton = new Button();
-
-    private final Button exitGameButton = new Button("Exit Game");
-    private final Label readyLabel = new Label("Are you ready?");
-
-//    private final Label mainTitle = new Label("WITS & WAGERS");
-
-    private final Label winnersTitle = new Label("WINNER(S)") ;
-
-    private int questionCount ;
-
-    private int playerCount ;
-
-    private final Label guessCountdownLabel = new Label();
-
-    private final Label betCountDownLabel = new Label();
-
-    private final Timeline countdown = new Timeline();
-
-    private final Label note = new Label() ;
-
-    private int currentSecond ;
-
-    private Boolean paused = false;
-
-    private final Label waitingScreenLabel = new Label() ;
-
-    private final Label playerNameLabel= new Label() ;
-
-    private final Label playerBalanceLabel = new Label() ;
-
-    private final Label bonusLabel = new Label() ;
-
-    private final PauseTransition pause = new PauseTransition();
-
-    private final Label correctAnswerLabel = new Label() ;
-
-    private final Label winningGuessLabel = new Label() ;
-    private final Label stepLabel = new Label();
+    private final Label questionTitle = new Label() ; // To display the question  in guess scene.
 
 
+    private final Label requestPlayerLabel = new Label() ; //request players to input their guess
+    private final Label inputNameLabel = new Label(); //Label to request players input theie names
+    private final TextField nameField = new TextField(); //Field to for inputing name
+    private final TextField answerField = new TextField() ;//Filed for inputing guesses
+    private int numPlayers; // Represents for total of players who are playing the game.
+    private final Label notificationErrorLabel = new Label(); //This label is used to display notification when edge cases occur.
 
-    private final Label chosenSLotLabel = new Label() ;
+    private final Button pauseButton = new Button(); // used to pause game
+    private final Button playGameButton = new Button(); // Use to start game or continue in pause scene
+    private final Button exitGameButton = new Button("Exit Game"); // Used to exit game
+    private final Label readyLabel = new Label("Are you ready?"); // Only used to display the word :"Arer you ready?"
+    private final Label winnersTitle = new Label("WINNER(S)") ; // Only used to display the word that it is initialized
+    private int questionCount ; //Start with 0 and when its reach 7, the game end.
+    private int playerCount ; // Similar to questionCount, start with 0 and qhen it reach numPlayers, move to other stages
+    private final Label guessCountdownLabel = new Label(); //the number countdown label in guess scene and the scene before the game start.
+    private final Label betCountDownLabel = new Label(); //The number countdown label for the slots and betting scenes
+    private final Timeline countdown = new Timeline(); // To set a timer.
+    private final Label note = new Label() ;//The note in guess scene
+    private int currentSecond ; // Used to set the time for gameplay scenes.
+    private Boolean paused = false; //Mainly used for logical displaying between slots and betting scenes
+    private final Label questionAnnoucementScreenLabel = new Label() ; //Only used in question annoucement screen
+    private final Label playerNameLabel= new Label() ; //Used to display players' name
+    private final Label playerBalanceLabel = new Label() ; // Used to display players' money
+    private final Label bonusLabel = new Label("Bonus Summary") ; // Only used to display  the word "Bonus Summary"
+    private final PauseTransition pause = new PauseTransition(); //To set time delay before moving to next scene
+    private final Label correctAnswerLabel = new Label() ; //used to display correct Answer
+    private final Label winningGuessLabel = new Label() ;// used to display winning guess
+    private final Label stepLabel = new Label(); //Used to display steps in rule scence
+    private final Label chosenSLotLabel = new Label() ;// used to Display the slot that players chose
+    private int winnersCount  = 0 ; //used to count the number of winners
+    private boolean gameStarted = false ; //If game start -> does not need to running agiain the method initialize
+                                            // to format the UI elements using embedded CSS
+    private final Label contentLabel = new Label(); //Display some contents in rule scee
+    private final Button homeButton = new Button("Home"); // back to the starting scene
 
-    private int winnersCount  = 0 ;
+    private boolean gotBack = false; // if gotback == true, does not need to load the other question set
 
-    private boolean gameStarted = false ;
-    private final Label contentLabel = new Label();
-    private final Button homeButton = new Button("Home");
-
-    private boolean gotBack = false;
-
-    private int countStep = 0;
+    private int countStep = 0; // to count steps in rule scene
 
 
 
@@ -129,12 +104,13 @@ public class GUI extends Application {
             "$1000",
             "$5000",
             "$10000"
-    };
+    }; // Just simply money labels.
 
 
 
-    private final HBox bettingMat= new HBox() ;
+    private final HBox bettingMat= new HBox() ;  // The slots or betting mat.
 
+    //This method used to set background for the whole game
     private void setBackgroundImage(Pane pane) {
 
 
@@ -150,6 +126,8 @@ public class GUI extends Application {
         // Add the background image to the pane
         pane.getChildren().add(0, backgroundImage); // Add at the first position
     }
+
+    // Used to set title "Wits & Wagers" for the whole game
     private void setMainTitle() {
         // Load the image
         Image mainTitleImage = new Image("file:src/main/java/com/nhan/witsandwagers/images/Asset 9.png");
@@ -168,6 +146,7 @@ public class GUI extends Application {
 
     }
 
+    //Used to create the slots (betting mat)
     private void createBettingMat(Stage stage) {
 
         bettingMat.getChildren().clear() ;
@@ -252,6 +231,8 @@ public class GUI extends Application {
         }
 
     }
+
+    //AMinly formating the UI elements wtih embedded CSS
     private void initialize(Stage stage ) {
 
 
@@ -274,7 +255,7 @@ public class GUI extends Application {
                 " -fx-font-size: 150px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
 
-        waitingScreenLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
+        questionAnnoucementScreenLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
         playerNameLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
@@ -312,7 +293,7 @@ public class GUI extends Application {
         nameField.setMaxWidth(400); // Explicitly set the maximum width
 
         nameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Limit input length to 25 characters
+            // Limit input length to 15 characters
             if (newValue.length() > 15) {
                 nameField.setText(oldValue);
             }
@@ -335,7 +316,7 @@ public class GUI extends Application {
         });
 
         answerField.setAlignment(Pos.CENTER);
-        notificationLabel.setStyle("-fx-font-size: 35px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
+        notificationErrorLabel.setStyle("-fx-font-size: 35px; -fx-text-fill: #a60910; -fx-font-family: 'Comic Sans MS';");
         ImageView pauseIcon = new ImageView(new Image("file:src/main/java/com/nhan/witsandwagers/images/Asset 2.png")); // Use the uploaded image path
         pauseIcon.setFitWidth(100); // Set the size of the icon
         pauseIcon.setFitHeight(100);
@@ -413,7 +394,7 @@ public class GUI extends Application {
         vButtonBox.setStyle("-fx-alignment: center; -fx-background-color: transparent;");
         StackPane.setAlignment(vButtonBox, Pos.CENTER);
 
-        vTitleBox.setSpacing(20);
+
 
 //        backgroundImage.setImage(new Image("file:/Users/thanhnhan/Desktop/javaProject/witsAndWagers/src/main/java/com/nhan/witsandwagers/mainMenu.jpg"));
 //        backgroundImage.setPreserveRatio(true); // Preserve aspect ratio
@@ -461,9 +442,9 @@ public class GUI extends Application {
         StackPane.setMargin(homeButton, new Insets(0, 100, 80, 0));
 
     }
-
-
     @Override
+
+    //Start scene (home scene)
     public void start(Stage primaryStage) {
 
 
@@ -510,6 +491,7 @@ public class GUI extends Application {
         }
     }
 
+    //Rules are displayed in this scene (method)
     private void showRuleScreen(Stage stage) {
         setBackgroundImage(mainMenuPane);
         setMainTitle();
@@ -527,7 +509,7 @@ public class GUI extends Application {
                     " -fx-font-size: 40px; -fx-font-family: 'Comic Sans MS'; -fx-effect: dropshadow(gaussian, black, 4, 0.5, 1, 1);");
 
             stepLabel.setText("When To Play");
-            contentLabel.setText("Wits & Wagers is most fun with groups of maximum 7 people. We recommend playing " +
+            contentLabel.setText("Wits & Wagers is most fun with groups of 4 to 7 people. We recommend playing " +
                     "at holiday parties, family reunions, or any large gathering of friends. " +
                     "Be prepared for light-hearted banter, a little bravado, and a big dose of cheering!");
         } else if (countStep == 2) {
@@ -611,6 +593,8 @@ public class GUI extends Application {
             text3.setMaxWidth(450);
 
             hButtonBox.setSpacing(50);
+
+
 
             hButtonBox.getChildren().addAll(text1, text2, text3);
 
@@ -733,28 +717,29 @@ public class GUI extends Application {
 
     }
 
+    //Scene for choosing numebr of player to play.
     private void showPlayerSelectionScreen( Stage stage) {
 
-        // Clear the current children of the main pane
+
         mainMenuPane.getChildren().clear();
         setBackgroundImage(mainMenuPane);
         vButtonBox.getChildren().clear() ;
 
         vButtonBox.setSpacing(30) ;
 
-        // Background image
+
 //        backgroundImage.setImage(new Image("file:player_select_bg.jpg"));
 
 
         backButton.setOnAction(e -> start(stage));
-        backButton.setMinWidth(300);
+     
 
         Button[] playerButtons = new Button[6];
         for (int i = 0; i < 6; i++) {
 
             playerButtons[i] = new Button("Play with " + (i +2)  + " players");
 
-            // Bind button size to window size
+
 
             playerButtons[i].prefWidthProperty().bind(mainMenuPane.widthProperty().multiply(0.22));
             playerButtons[i].prefHeightProperty().bind(mainMenuPane.heightProperty().multiply(0.0008));
@@ -773,8 +758,10 @@ public class GUI extends Application {
         mainMenuPane.getChildren().addAll( vButtonBox);
 
     }
+
+    //Scene for inputing player' name
     private void inputPlayersNameScreen(Stage stage) {
-        // Clear the current children of the main pane
+
         mainMenuPane.getChildren().clear();
         setBackgroundImage(mainMenuPane);
         setMainTitle();
@@ -793,31 +780,31 @@ public class GUI extends Application {
         localVBox.setSpacing(30);
         localVBox.setAlignment(Pos.CENTER);
 
-        notificationLabel.setText("");
+        notificationErrorLabel.setText("");
         // Background image
 //        backgroundImage.setImage(new Image("file:player_select_bg.jpg"));
 
         inputNameLabel.setText("Please enter a name for Player " + (playerCount ));
 
-        nextButton.setMinWidth(200);
+
         nextButton.setOnAction(e -> {
             String name = nameField.getText().trim();
             if (name.isEmpty()) {
-                notificationLabel.setText("Name cannot be empty. Please try again!");
+                notificationErrorLabel.setText("Name cannot be empty. Please try again!");
             } else if (!game.isValidPlayerName(name)) { // Assume G
-                notificationLabel.setText("Name is invalid or already taken. Please enter a different name!");
+                notificationErrorLabel.setText("Name is invalid or already taken. Please enter a different name!");
             } else {
                 game.addPlayer(name);
                 if (playerCount < numPlayers) {
                     playerCount++;
                     inputPlayersNameScreen(  stage);
                 } else {
-                    notificationLabel.setText("");
+                    notificationErrorLabel.setText("");
                     showReadyToPlayScreen( stage );
                 }
             }
         });
-        backButton.setMinWidth(120);
+
         backButton.setOnAction(e -> {
 
             if (playerCount > 1) {
@@ -831,10 +818,12 @@ public class GUI extends Application {
 
         hButtonBox.getChildren().addAll(backButton, nextButton);
 
-        vButtonBox.getChildren().addAll( nameField, hButtonBox, notificationLabel);
+        vButtonBox.getChildren().addAll( nameField, hButtonBox, notificationErrorLabel);
         localVBox.getChildren().addAll(inputNameLabel,vButtonBox) ;
         mainMenuPane.getChildren().addAll(localVBox);
     }
+
+    //Scene to ask player "Are you ready? "
     private void showReadyToPlayScreen(Stage stage )  {
         mainMenuPane.getChildren().clear();
         setBackgroundImage(mainMenuPane);
@@ -858,6 +847,8 @@ public class GUI extends Application {
         vButtonBox.getChildren().addAll(readyLabel, playGameButton, backButton);
         mainMenuPane.getChildren().addAll( vButtonBox);
     }
+
+    //Scene for showing countdown before the game start
     private void showCountdownScreen( Stage stage) {
         mainMenuPane.getChildren().clear();
         setBackgroundImage(mainMenuPane);
@@ -899,11 +890,13 @@ public class GUI extends Application {
         countdown.setCycleCount(3);
         countdown.play();
     }
+
+    //Scene for quesiton annoucement stage.
     private void showQuestionScreen(Stage stage ){
 
         mainMenuPane.getChildren().clear() ;
         setBackgroundImage(mainMenuPane);
-        waitingScreenLabel.setText("Question " + questionCount);
+        questionAnnoucementScreenLabel.setText("Question " + questionCount);
 
 
         pause.setDuration(Duration.seconds(2));
@@ -912,10 +905,12 @@ public class GUI extends Application {
             showGuessScreen(stage);
 
         });
-        mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
+        mainMenuPane.getChildren().addAll(questionAnnoucementScreenLabel) ;
         pause.play();
 
     }
+
+    //Scene to display questions and requires players to guess
     private void showGuessScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear();
@@ -923,7 +918,7 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear();
         countdown.getKeyFrames().clear();
         vButtonBox.setSpacing(20);
-        notificationLabel.setText("");
+        notificationErrorLabel.setText("");
         if(!paused) answerField.clear();
         paused = false ;
 
@@ -948,19 +943,19 @@ public class GUI extends Application {
                     String currentGuessString = answerField.getText().trim();
                     // Check if the input is empty
                     if (currentGuessString.isEmpty()) {
-                        notificationLabel.setText("Your guess cannot be empty. Please try again!");
+                        notificationErrorLabel.setText("Your guess cannot be empty. Please try again!");
 
                     } else {
 
                         countdown.stop();
-                        long guess = Long.parseLong(currentGuessString); // Parse the input as a number
+                        long guess = Long.parseLong(currentGuessString);
                         game.addGuess(guess);
                         game.getPlayer(playerCount - 1).setGuess(guess);
 
                         if (playerCount < numPlayers) {
                             playerCount++;
                             currentSecond = 30;
-                            showGuessScreen(stage); // Move to the next player's turn
+                            showGuessScreen(stage);
                         } else {
                             playerCount = 1;
                             game.sortGuesses();
@@ -969,7 +964,7 @@ public class GUI extends Application {
                             currentSecond = 30;
                             createBettingMat(stage);
 
-                            showTurnScreen(stage); // Proceed to the next screen
+                            showTurnScreen(stage);
 
                         }
                     }
@@ -1052,13 +1047,15 @@ public class GUI extends Application {
         StackPane.setMargin(note, new Insets(0, 0, 130, 0)); // Add margin for spacing
 
 
-        vButtonBox.getChildren().addAll(requestPlayerLabel, answerField, nextButton,notificationLabel);
+        vButtonBox.getChildren().addAll(requestPlayerLabel, answerField, nextButton, notificationErrorLabel);
         StackPane.setAlignment(vButtonBox, Pos.CENTER);
         StackPane.setMargin(vButtonBox, new Insets(100, 0, 0, 0)); // Add margin for spacing
         mainMenuPane.getChildren().addAll(questionNumTitleOfShowGuessScreen, questionTitle, guessCountdownLabel, note, vButtonBox, pauseButton);
 
 
     }
+
+    //Scene to inform who can bet
     private void showTurnScreen(Stage stage) {
 
         mainMenuPane.getChildren().clear() ;
@@ -1068,7 +1065,7 @@ public class GUI extends Application {
 
         playerNameLabel.setText(game.getPlayer(playerCount -1  ).getName() ) ;
 
-        waitingScreenLabel.setText( "Now is your betting turn!" ) ;
+        questionAnnoucementScreenLabel.setText( "Now is your betting turn!" ) ;
 
 
         pause.setDuration(Duration.seconds(2));
@@ -1080,12 +1077,14 @@ public class GUI extends Application {
 
         });
 
-        vButtonBox.getChildren().addAll(playerNameLabel, waitingScreenLabel);
+        vButtonBox.getChildren().addAll(playerNameLabel, questionAnnoucementScreenLabel);
         mainMenuPane.getChildren().addAll(vButtonBox) ;
         pause.play();
 
 
     }
+
+    //Pause scene
     private void showPauseScreen(Stage stage, int chooseScreen) {
         mainMenuPane. getChildren().clear() ;
         setBackgroundImage(mainMenuPane);
@@ -1123,6 +1122,8 @@ public class GUI extends Application {
         mainMenuPane.getChildren().addAll(vButtonBox);
 
     }
+
+    //Scene to show betting mat(slots). Players Can choose a valid slot to bet in this scene.
     private void showTableScreen(Stage stage) {
 
         StackPane.setAlignment(hButtonBox,Pos.BOTTOM_CENTER)  ;
@@ -1204,6 +1205,8 @@ public class GUI extends Application {
 
 
     }
+
+    //Scene to show players' balance and allow players to choose an amount of money to bet
     private void showBetScreen(Stage stage) {
 
 
@@ -1288,10 +1291,12 @@ public class GUI extends Application {
 
         vButtonBox.getChildren().addAll( chosenSLotLabel, playerBalanceLabel,hButtonBox, backButton);
     }
+
+    // Annoucement to the bonus scene
     private void showBonusSummaryScreen(Stage stage) {
         mainMenuPane.getChildren().clear();
         setBackgroundImage(mainMenuPane);
-        bonusLabel.setText("Bonus Summary") ;
+
 
         pause.setDuration(Duration.seconds(2) );
 
@@ -1305,6 +1310,8 @@ public class GUI extends Application {
         pause.play();
 
     }
+
+    //Scene to show the bonus after each question round.
     private void showBonusDetailScreen(Stage stage ) {
         mainMenuPane.getChildren().clear() ;
         setBackgroundImage(mainMenuPane);
@@ -1427,17 +1434,21 @@ public class GUI extends Application {
         countdown.play();
 
     }
+
+    //Annoucement to the final result scene.
     private void showResultScreen(Stage stage ){
         mainMenuPane.getChildren().clear() ;
         setBackgroundImage(mainMenuPane);
-        waitingScreenLabel.setText( "Final Result" ) ;
+        questionAnnoucementScreenLabel.setText( "Final Result" ) ;
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
             showResultDetailScreen(stage);
         });
-        mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
+        mainMenuPane.getChildren().addAll(questionAnnoucementScreenLabel) ;
         pause.play();
     }
+
+    //Scene to display the winners
     private void showResultDetailScreen(Stage stage){
 
         mainMenuPane.getChildren().clear() ;
@@ -1445,6 +1456,7 @@ public class GUI extends Application {
         vButtonBox.getChildren().clear() ;
         countdown.getKeyFrames().clear() ;
         vButtonBox.setSpacing(30);
+        int winnerCount = 0 ;
 
 
         List<Label> winnnersLalelList = new ArrayList<>();
@@ -1460,9 +1472,6 @@ public class GUI extends Application {
 
             vButtonBox.getChildren().add(winnnersLalelList.get(i)) ;
         }
-
-
-
         countdown.getKeyFrames().add(
 
 
@@ -1481,28 +1490,26 @@ public class GUI extends Application {
 
                         Timeline delay = new Timeline(
                                 new KeyFrame(Duration.seconds(2), event -> {
-
+                                    winnersCount = 0 ;
                                     showThankYouScreen(stage );
 
                                 })
                         );
                         delay.play();
-
-
                     }
                 })
         );
         mainMenuPane.getChildren().addAll(winnersTitle, vButtonBox);
         countdown.setCycleCount(winners.size() +  1 );
         countdown.play() ;
-
-
     }
+
+    //Display thank you
     private void showThankYouScreen(Stage stage ){
         mainMenuPane.getChildren().clear() ;
         setBackgroundImage(mainMenuPane);
         setMainTitle();
-        waitingScreenLabel.setText( "Thank You!" ) ;
+        questionAnnoucementScreenLabel.setText( "Thank You!" ) ;
 
         pause.setDuration(Duration.seconds(2));
         pause.setOnFinished(event -> {
@@ -1512,9 +1519,11 @@ public class GUI extends Application {
 
         });
 
-        mainMenuPane.getChildren().addAll(waitingScreenLabel) ;
+        mainMenuPane.getChildren().addAll(questionAnnoucementScreenLabel) ;
         pause.play();
     }
+
+    //To launch the game.
     public static void main(String[] args) {
         launch(args);
     }
