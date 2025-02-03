@@ -1,25 +1,46 @@
 package com.nhan.witsandwagers.Elements;
 
-public class Question {
-    private final String question ;
-    private final long answer ;
-    private final int weight ;
+        /**
+         * Represents a question in the Wits and Wagers game.
+         */
+        public class Question {
+            private final String question;
+            private final long answer;
+            private final int weight;
 
+            /**
+             * Constructs a new Question with the specified question text, answer, and weight.
+             * @param question the text of the question
+             * @param answer the answer to the question
+             * @param weight the weight of the question
+             */
+            public Question(String question, long answer, int weight) {
+                this.question = question;
+                this.answer = answer;
+                this.weight = weight;
+            }
 
-    public Question(String question, long answer, int weight ) {
-        this.question =  question ;
-        this.answer = answer ;
-        this.weight = weight ;
-    }
+            /**
+             * Gets the text of the question.
+             * @return the text of the question
+             */
+            public String getQuestion() {
+                return this.question;
+            }
 
-    public String getQuestion() {
-        return this.question ;
-    }
+            /**
+             * Gets the answer to the question.
+             * @return the answer to the question
+             */
+            public long getAnswer() {
+                return this.answer;
+            }
 
-    public long getAnswer() {
-        return this.answer ;
-    }
-    public int getWeight() {
-        return this.weight ;
-    }
-}
+            /**
+             * Gets the weight of the question.
+             * @return the weight of the question
+             */
+            public int getWeight() {
+                return this.weight;
+            }
+        }
