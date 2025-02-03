@@ -1,4 +1,4 @@
-What is the height of Eiffel Tower ?_330_2
+What is the height of Eiffel Tower (in metres) ?_330_2
 How many continents are there ?_7_1
 How many times did Germany win the FIFA World Cup ?_4_1
 What is the population of Frankfurt in 2024 ?_801000_2

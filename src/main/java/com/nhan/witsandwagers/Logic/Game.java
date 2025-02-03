@@ -6,7 +6,13 @@ import com.nhan.witsandwagers.Elements.Question;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 
 // Represents the main game logic
 public class Game {
@@ -22,18 +28,64 @@ public class Game {
     private final List<String> playerNames = new ArrayList<>();
 
     // Load questions from a file
-    public void loadQuestions(String fileName) {
+//    public void loadQuestions(String fileName) {
+//        if (questions.size() < 7) {
+//            questions.clear();
+//            try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+//
+//                String line;
+//                while ((line = br.readLine()) != null) {
+//
+//                    String[] parts = line.split("_");
+//                    if (parts.length == 3) {
+//                        questions.add(new Question(parts[0], Long.parseLong(parts[1]), Integer.parseInt(parts[2])));
+//
+//                    }
+//                }
+//            } catch (IOException e) {
+//                System.err.println("Error reading the questions file: " + e.getMessage());
+//                System.exit(1);
+//            }
+//        }
+//        selectedQuestions = weightedRandomSampling() ;
+//    }
+
+//    public void loadQuestions(String filePath) {
+//        if (questions.size() < 7) {
+//            questions.clear();
+//            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
+//                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+//
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    String[] parts = line.split("_");
+//                    if (parts.length == 3) {
+//                        questions.add(new Question(parts[0], Long.parseLong(parts[1]), Integer.parseInt(parts[2])));
+//                    }
+//                }
+//            } catch (IOException e) {
+//                System.err.println("Error reading the questions file: " + e.getMessage());
+//                System.exit(1);
+//            }
+//        }
+//        selectedQuestions = weightedRandomSampling();
+//    }
+    public void loadQuestions(String filePath) {
         if (questions.size() < 7) {
             questions.clear();
-            try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            URL resourceUrl = getClass().getResource("/" + filePath);
+            if (resourceUrl == null) {
+                System.err.println("Resource not found: " + filePath);
+                System.exit(1);
+            }
+            try (InputStream inputStream = resourceUrl.openStream();
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
                 String line;
-                while ((line = br.readLine()) != null) {
-
+                while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("_");
                     if (parts.length == 3) {
                         questions.add(new Question(parts[0], Long.parseLong(parts[1]), Integer.parseInt(parts[2])));
-
                     }
                 }
             } catch (IOException e) {
@@ -41,7 +93,7 @@ public class Game {
                 System.exit(1);
             }
         }
-        selectedQuestions = weightedRandomSampling() ;
+        selectedQuestions = weightedRandomSampling();
     }
 
     public  List<Question> weightedRandomSampling() {
